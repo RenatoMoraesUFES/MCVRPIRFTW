@@ -1,0 +1,62 @@
+(1) Toda mensagem "print" em tela só pode ser feita no principal.main(). A não ser durante o processo de programação e debugger.
+Os prints das funções em "saidainstancias.py" devem deixar de existir. Se quiser, tem que devolver parâmetros para o principal.main() e lá fazer impressões para o usuário.
+
+(2) Separei a função de Leitura() em duas: fazer_copia() e carrega_instancia().
+A função fazer_copia() deve fazer agora apenas a extração do texto. Por favor, simplificá-la e remover funcionalidade de leitura dos dados da instância.
+A função carrega_instancia() não precisa mais extrair o texto do arquivo. Por favor, simplificá-la e remover essa funcionalidade. Ela deve fazer apenas a leitura dos dados da instância
+
+(3) No principal.main(). Perceba que, a apartir da leitura da instância, somente o dicionário está sendo usado como parâmetro de entrada das outras funções.
+Evitar muitos parâmetros de entrada e muitos parâmetros de saída.
+Tentar definir um padrão e repetí-lo sempre (ou o máximo possível).
+
+
+(4) Seguir as as convenções de nomenclatura do Python:
+
+Segundo as convenções de nomenclatura do próprio Python Enhancement Proposal 8, algumas preocupações incluem:
+
+- Evitar certos nomes
+
+        Nunca usar os caracteres 'l', 'O', ou 'I' como nomes de variáveis pois, em algumas fontes, eles são indistinguíveis dos números um e zero.
+
+- Pacote e nomes de módulos
+
+        Os módulos devem ter nomes pequenos, sendo estes escritos em minúsculo por completo.
+
+        Ex: package
+
+- Nomes de funções e métodos
+
+        Nomes de funções e métodos devem estar em letras minúsculas, com palavras separadas por underscores conforme seja útil para a legibilidade.
+
+        Ex: nome_de_uma_funcao
+
+        Obs: o caso misto (todas as iniciais maiúsculas, com exceção da primeira) é permitido apenas em contextos onde isso já é o estilo predominante, para manter compatibilidade com versões anteriores.
+
+- Constantes
+
+        Constantes são geralmente definidas em um nível de módulo e escritas em letras maiúsculas com underscores separando as palavras. Exemplos incluem MAX_OVERFLOW e TOTAL.
+
+- Identação
+
+        A identação deve ser feita usando quatro espaços por nível.
+
+- Linhas em branco
+
+        Linhas em branco são recomendadas para separar funções e definições de classes (duas linhas), além de definições de métodos (uma linha).
+
+- Espaços em branco
+
+        O espaço em branco deve ser usado para separar operadores matemáticos, binários, de comparação e de atribuição de outros elementos.
+
+        Ex:
+
+        if variavel == False:
+            print 2 * 3
+
+        Deve-se evitar o uso de espaços em branco entre parênteses e parâmetros na declaração de uma função, bem como entre uma chamada de função e o primeiro parêntese de sua lista de argumentos.
+
+        Ex: funcao(primeiro_parametro, segundo_parametro)
+        
+(5) Pesquisar "docstrings". E, depois que ficar sabendo o que é, utilizarno seu código.
+Coloquei uma docstring no principal.main()
+

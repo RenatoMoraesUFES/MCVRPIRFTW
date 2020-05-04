@@ -1,0 +1,26 @@
+Este projeto está baseado no problema Multiple Compartment Vehicle Routing Problem with Intermediate Replenishment Facilitie and Time Windows (MCVRPIRFTW).
+
+O problema e a formulação que o resolve está definido no artigo:
+HF Astoures, R de Alvarenga Rosa, 2019, PLANEJAMENTO DE ENTREGAS EM ÁREAS URBANAS CONSIDERANDO RECARREGAMENTO INTERMEDIÁRIO, VEÍCULOS COM MÚLTIPLOS COMPARTIMENTOS E JANELA DE TEMPO. Anais do 33° Congresso  de  Pesquisa  e  Ensino  em  Transportes da ANPET. Balneário Camboriú - SC.
+
+O programa aqui apresentado resolve o problema MCVRPIRFTW atravês de heurísticas.
+
+- No diretório raiz encontram-se:
+(1) Esse arquivo README
+(2) Diretório /bin com o arquivo executável acompanhado de diretórios e arquivos de configuração necessários à sua execução
+(3) Diretório /src com todos os arquivos fontes (sources) do programa organizados em subdiretórios
+(4) Diretório /tmp com arquivos temporários de organização e administração
+
+
+- Para executar o programa deve-se ter o Python 3 instalado em sua máquina e seguir os comentários a seguir.
+
+Ir ao diretório "bin" e executar o arquivo "executavel.py" junto com o arquivo "executar.config" e a estrutura de diretórios "INPUT" e "OUTPUT".
+
+O arquivo "executar.config" contém os parâmetros que definem uma rodada de execução como, por exemplo, critérios de parada (tempo máximo, ou número máximo de iterações), algoritmos a serem executados, etc.
+
+O diretório "INPUT" deve conter o arquivo "input.config" que lista as instâncias a serem resolvidas na rodada (nome dos arquivos ".dat") de execução e os arquivos ".dat" com as informações que definem a instância.
+
+O diretório "OUTPUT" é criado pelo próprio programa caso ele não exista. Nele aparecerão todas as soluções e saídas do programa após, ou durante, a sua execução.
+
+
+
