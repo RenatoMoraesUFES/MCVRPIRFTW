@@ -57,6 +57,6 @@ Segundo as convenções de nomenclatura do próprio Python Enhancement Proposal 
 
         Ex: funcao(primeiro_parametro, segundo_parametro)
         
-(5) Pesquisar "docstrings". E, depois que ficar sabendo o que é, utilizarno seu código.
+(5) Pesquisar "docstrings". E, depois que ficar sabendo o que é, utilizar no seu código.
 Coloquei uma docstring no principal.main()
 
