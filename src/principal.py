@@ -23,18 +23,19 @@ else:
 # Funcao principal para controle do fluxo do programa
 
 def main():
-    """ Essa função chama as principais funções de entrada, processamento e saída
-	    As variáveis globais estão definidas em src.variaveis.definicaovariaveis"""
+    """ Esta função chama as principais funções de entrada, processamento e saída
+	    As variáveis globais estão definidas em src.variaveis.definicaovariaveis
+    """
 	    
 	### VARIAVEIS GLOBAIS DEFINIDAS EM src.variaveis.definicaovariaveis ###
     global dic_instancia # armazena todas as informações básicas de uma instância. Informações lidas dos arquivos de entrada.
 
     ### Carrega do arquivo ./executar.config os parâmetros que caracterizam a execução do programa 
-    parametros_de_execucao = leituraconfiguracoes.Leitura_config('executar.config') 
+    parametros_de_execucao = leituraconfiguracoes.leitura_config('executar.config') 
     #print(parametros_de_execucao, end='\n\n\n')
 
     ### Carrega do arquivo INPUT/input.config as instâncias a serem processadas
-    lista_de_instancias = leituraconfiguracoes.Leitura_input('input.config') 
+    lista_de_instancias = leituraconfiguracoes.leitura_input('input.config') 
     #print(lista_de_instancias, end='\n\n\n')
     
     
@@ -49,13 +50,13 @@ def main():
             #print(dic_instancia_corrente, end='\n\n\n')
 
             ### Gera as saidas texto e figuras de acordo com os parametros_de_execucao
-            if 'Escrita' in parametros_de_execucao:
+            if 'escrita' in parametros_de_execucao:
                 texto = entradainstancias.fazer_copia(dic_instancia_corrente["nome_instancia"] + '.dat')
-                saidainstancias.Escrita(texto, dic_instancia_corrente)
-            if 'Grafo_distancia' in parametros_de_execucao:
-                saidainstancias.Grafo_distancia(dic_instancia_corrente)
-            if 'Grafo_caixas_do_cliente' in parametros_de_execucao:
-                saidainstancias.Grafo_caixas_do_cliente(dic_instancia_corrente)
+                saidainstancias.escrita(texto, dic_instancia_corrente)
+            if 'grafo_distancia' in parametros_de_execucao:
+                saidainstancias.grafo_distancia(dic_instancia_corrente)
+            if 'grafo_caixas_do_cliente' in parametros_de_execucao:
+                saidainstancias.grafo_caixas_do_cliente(dic_instancia_corrente)
 
             ##### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
             
@@ -64,7 +65,10 @@ def main():
             ##### saidasolucao.cria_graficos(dic_instancia_corrente,dic_solucao_corrente, configuracoes)
             ##### saidasolucao.cria_estatisticas(dic_instancia_corrente,dic_solucao_corrente, configuracoes)
 
-        except: continue
+        except:
+            print(f"\nErro em {instancia_corrente}.\n")
+            continue
+    print("\nFim.\n")
 ###############################################################################
 
 ### Caso queira testar diretamente desse .py

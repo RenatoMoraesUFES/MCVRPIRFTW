@@ -45,11 +45,13 @@ dic_instancia = {
 
 
 ###############################################################################
-# Funcao para imprimir a matriz distancia.
-# A funcao le a lista elemento por elemento
-# e imprime num modelo para uma visualizacao facil.
 
 def imprime_distancia(ll):
+    """ Esta funcao imprime a matriz distancia
+        Ela le a lista elemento por elemento
+        E imprime num modelo de visualizacao facil
+    """
+
     print('|{:^100}|'.format('destino'))
     print("origem |", end='')
     for i in range(len(ll)-1):
@@ -67,25 +69,29 @@ def imprime_distancia(ll):
 ###############################################################################
 
 ###############################################################################
-# Funcao para imprimir as janelas de tempos dos clientes.
-# A funcao le as duas listas contendo o inicio e o fim
-# da janela de tempo de cada cliente
-# e imprime num modelo para uma visualizacao facil
 
 def imprime_janelas_tempo(wti, wtf):
+    """ Esta funcao imprime as janelas de tempos dos clientes
+        A funcao le as duas listas contendo o inicio e o fim
+        da janela de tempo de cada cliente
+        e imprime num modelo de visualizacao facil
+    """
+
     for i in range(len(wti)):
         print("Cliente ", i, "= [", wti[i], "->", wtf[i], "]\n")
        
 ###############################################################################
 
 ###############################################################################
-# Funcao para imprimir qual caixa pertence a qual cliente.
-# Cada linha representa um cliente.
-# A funcao identifica se a caixa na posicao j pertence ao cliente (i)
-# verificando se e 1 ou 0
-# e imprime num modelo para uma visualizacao facil.
 
 def imprime_prop(prop):
+    """ Funcao para imprimir qual caixa percente a qual cliente
+        Cada linha representa um cliente
+        A funcao identifica se a caixa (j) pertence ao cliente (i)
+        Verificando se eh 1 (True) ou (0) False
+        E imprime num modelo de visualizacao facil
+    """
+
     for i in range(len(prop)):
         caixas = []
         for j in range(len(prop[i])):
@@ -97,11 +103,13 @@ def imprime_prop(prop):
 ###############################################################################
 
 ###############################################################################
-# Funcao para calcular o custo usando a
-# bicicleta convenc ou eletr para percorrer a distancia 0,i+1
-# se a caixa j pertence ao cliente i.
 
 def imprime_qual_bicicleta(prop, vlb, distancia):
+    """ Funcao em teste para calcular o custo usando uma bic
+        convenc ou eletr para percorrer a distancia 0,i+1
+        se a caixa j pertencer ao cliente i.
+    """
+
     for i in range (len(prop)):
         for j in range (len(prop[i])):
             distancia_a_ser_percorrida = prop[i][j]*distancia[0][i+1]

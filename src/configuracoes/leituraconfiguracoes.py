@@ -2,12 +2,14 @@ import os
 
 
 ###############################################################################
-# Funcao de leitura arquivo 'input.config'
-# Funcao le arquivo de entrada com nomes dos arq '.dat' a serem lidos
-# armazena nomes de entrada seguidos de 1 e ignora os  seguidos de 0
-# retorna uma lista com os nomes de arquivos a serem lidos
 
-def Leitura_input(config):
+def leitura_input(config):
+    """ Funcao de leitura de configuracao
+        Le o arquivo 'input.config' com os arquivos '.dat' a serem lidos
+        Verifica se eh 1 (True) ou 0 (False)
+        Retorna uma lista com os arquivos a serem lidos
+    """
+
     if not os.path.exists('INPUT'):
         print("Diretório de entrada não encontrado.")
         exit()
@@ -37,7 +39,13 @@ def Leitura_input(config):
 # armazena nomes de entrada seguidos de 1 e ignora os  seguidos de 0
 # retorna uma lista com os nomes de arquivos a serem lidos.
 
-def Leitura_config(config):
+def leitura_config(config):
+    """ Funcao de leitura de configuracao
+        Le o arquivo 'executar.config' com os parametros a serem executados
+        Verifica se eh 1 (True) ou (0) False
+        E armazena numa lista os parametros
+    """
+
     funcoes = []
     file = open(config)
     linha = file.readline()

@@ -1,14 +1,20 @@
 (1) Toda mensagem "print" em tela só pode ser feita no principal.main(). A não ser durante o processo de programação e debugger.
 Os prints das funções em "saidainstancias.py" devem deixar de existir. Se quiser, tem que devolver parâmetros para o principal.main() e lá fazer impressões para o usuário.
 
+### (1) Resolvido. Os prints só são necessários durante a programação, de fato. Havendo apenas necessidade em casos de erro acredito eu. ###
+
 (2) Separei a função de Leitura() em duas: fazer_copia() e carrega_instancia().
 A função fazer_copia() deve fazer agora apenas a extração do texto. Por favor, simplificá-la e remover funcionalidade de leitura dos dados da instância.
 A função carrega_instancia() não precisa mais extrair o texto do arquivo. Por favor, simplificá-la e remover essa funcionalidade. Ela deve fazer apenas a leitura dos dados da instância
 
+### (2) Resolvido. Já eliminei as partes descenessárias em carrega_instancia(). E fazer uma cópia sem precisar carregar dados é relativamente simples.
+    Ficou uma funcao bem simples, caso tenha sido essa a sua intencao. Ou não entendi bem e você queria armazenar em fazer_copia() apenas o texto inutil? ###
+
 (3) No principal.main(). Perceba que, a apartir da leitura da instância, somente o dicionário está sendo usado como parâmetro de entrada das outras funções.
 Evitar muitos parâmetros de entrada e muitos parâmetros de saída.
-Tentar definir um padrão e repetí-lo sempre (ou o máximo possível).
+Tentar definir um padrão e repetí-lo sempre (ou o máximo possível). 
 
+### (3) Certo. ###
 
 (4) Seguir as as convenções de nomenclatura do Python:
 
@@ -56,7 +62,11 @@ Segundo as convenções de nomenclatura do próprio Python Enhancement Proposal 
         Deve-se evitar o uso de espaços em branco entre parênteses e parâmetros na declaração de uma função, bem como entre uma chamada de função e o primeiro parêntese de sua lista de argumentos.
 
         Ex: funcao(primeiro_parametro, segundo_parametro)
+
+### (4) Feito. Por agora a alteracao feita no nomes das funcoes. Coloquei todas em minusculo. ###
         
 (5) Pesquisar "docstrings". E, depois que ficar sabendo o que é, utilizar no seu código.
 Coloquei uma docstring no principal.main()
+
+### (5) Feito. Utilizei algumas docstrings no código. Valeu a sugestão. Bem mais organizado. ###
 
