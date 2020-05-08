@@ -76,3 +76,4 @@ def main():
 ### os arquivos de configuração e o diretório INPUT devem estar disponíveis no diretório do .py
 if __name__ == "__main__":
 	main()
+
