@@ -11,7 +11,6 @@ O programa aqui apresentado resolve o problema MCVRPIRFTW atravês de heurístic
 (3) Diretório /src com todos os arquivos fontes (sources) do programa organizados em subdiretórios
 (4) Diretório /tmp com arquivos temporários de organização e administração
 
-
 - Para executar o programa deve-se ter o Python 3 instalado em sua máquina e seguir os comentários a seguir.
 
 Ir ao diretório "bin" e executar o arquivo "executavel.py" junto com o arquivo "executar.config" e a estrutura de diretórios "INPUT" e "OUTPUT".
