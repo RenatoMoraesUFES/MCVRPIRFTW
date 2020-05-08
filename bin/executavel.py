@@ -15,3 +15,4 @@ from src import principal
 if __name__ == "__main__":
 	principal.main() # a função main() da biblioteca principal, organiza o fluxo de execução do programa.
 
+	
