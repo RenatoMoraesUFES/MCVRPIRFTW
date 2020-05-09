@@ -29,9 +29,9 @@ def main():
 	    
 	### VARIAVEIS GLOBAIS DEFINIDAS EM src.variaveis.definicaovariaveis ###
     global dic_instancia # armazena todas as informações básicas de uma instância. Informações lidas dos arquivos de entrada.
-
-    ### Carrega do arquivo ./executar.config os parâmetros que caracterizam a execução do programa 
-    parametros_de_execucao = leituraconfiguracoes.leitura_config('executar.config') 
+    
+    ### Carrega do arquivo ./configuracoes.py os parâmetros que caracterizam a execução do programa 
+    parametros_de_execucao = leituraconfiguracoes.leitura_config()
     #print(parametros_de_execucao, end='\n\n\n')
 
     ### Carrega do arquivo INPUT/input.config as instâncias a serem processadas
