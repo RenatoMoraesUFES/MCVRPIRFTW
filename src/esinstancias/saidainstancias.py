@@ -58,13 +58,13 @@ def grafo_distancia(dic_instancia):
     for i in range(len(dic_instancia['distancia'])-2):
         for j in range(len(dic_instancia['distancia'][i])-1):
             if i != j and dic_instancia['distancia'][i][j] != 9999:
-                if dic_instancia['distancia'][i][j] < 1.655:
+                if dic_instancia['distancia'][i][j] < 2:
                     grafo_dist.add_edge(i,j, value=dic_instancia['distancia'][i][j])
 
     pos = nx.shell_layout(grafo_dist)
     nx.draw(grafo_dist, pos, with_labels=1)
-    #nx.draw_networkx_edge_labels(grafo_dist, pos)
-    plt.text(0,1,str(grafo_dist.size(weight='value')), fontdict=None)
+    nx.draw_networkx_edge_labels(grafo_dist, pos)
+    #plt.text(0,1,str(grafo_dist.size(weight='value')), fontdict=None)
     plt.show()'''
 
     ### OPCAO 2 COM GRAPHVIZ EM PROCESSO (MAIS AVANCADO) ###
@@ -78,7 +78,11 @@ def grafo_distancia(dic_instancia):
     arq = open(file, 'w')
     #primeira linha como padrao da linguagem
     arq.write('strict graph {\nsplines="compound"\n')
+    #arq.write('0 [pos="0,0!"];\n')  ### fixar armazem central no centro
     for i in range(len(distancia)-1):
+        ### 'if' para fixar posicao dos nós; preciso trabalhar na posicao
+        #if i != 0 and i != len(distancia)-1:
+            #arq.write(str(i) + f' [pos="{i},{i}!"];\n')
         for j in range(len(distancia[i])-1):
             #ignoro as distancias entre si mesmos e as 'infinitas' ditas '9999'
             if not i == j and distancia[i][j] != 9999:
@@ -98,8 +102,8 @@ def grafo_distancia(dic_instancia):
     
     os.chdir('OUTPUT')
     os.system('dot ' + name + '_DIST.dot -Tpng -o' + name + '_DIST.png')
-    #os.system('dot -Kfdp -n -Tpng -o'
-     #         + name + '_DIST.png'
+    #os.system('dot -Kfdp -n -Tpng -o '
+     #         + name + '_DIST.png '
       #        + name + '_DIST.dot')
     os.chdir('..')
     #print("\nVerificar arquivo '.png' de saída.\n")
