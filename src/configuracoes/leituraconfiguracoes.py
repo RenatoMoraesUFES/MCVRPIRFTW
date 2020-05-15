@@ -1,5 +1,4 @@
 import os
-from bin.configuracoes import *
 
 ###############################################################################
 
@@ -34,18 +33,29 @@ def leitura_input(config):
 
 ###############################################################################
 
-def leitura_config():
+def leitura_config(config):
     """ Funcao de leitura de configuracao
         Le o arquivo 'configuracoes.py' com os parametros a serem executados
         Verifica se eh 1 (True) ou (0) False
         E armazena numa lista os parametros
     """
     
-    global dic_configuracoes
-    
-    funcoes = []
-    for parametro in dic_configuracoes:
-        if dic_configuracoes[parametro] == 1:
-            funcoes.append(parametro)
-    return funcoes
+    dic_configuracoes = {
+        'imprime_distancia'         : {},
+        'imprime_janelas_tempo'     : {},
+        'imprime_prop'              : {},
+        'imprime_qual_bicicleta'    : {},
+        'escrita'                   : {},
+        'grafo_distancia'           : {},
+        'grafo_caixas_do_cliente'   : {}
+        }
+    file = open(config)
+    linha = file.readline()
+    while linha:
+        if not linha.startswith("#"):
+            valor = linha.split()
+            if valor[1] == '1':
+                dic_configuracoes[valor[0]] = 1
+        linha = file.readline()
+    return dic_configuracoes
 ###############################################################################

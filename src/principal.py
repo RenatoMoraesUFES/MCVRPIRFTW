@@ -9,7 +9,6 @@ if __name__ == "__main__":
     os.chdir('../bin')
 
     from src.variaveis.definicaovariaveis import *
-    from bin.configuracoes import *
     from src.configuracoes import leituraconfiguracoes
     from src.esinstancias import entradainstancias
     from src.esinstancias import saidainstancias
@@ -17,7 +16,6 @@ if __name__ == "__main__":
 ### usado apenas como biblioteca 
 else:
     from src.variaveis.definicaovariaveis import *
-    from bin.configuracoes import *
     from src.configuracoes import leituraconfiguracoes
     from src.esinstancias import entradainstancias
     from src.esinstancias import saidainstancias
@@ -32,10 +30,9 @@ def main():
 	    
 	### VARIAVEIS GLOBAIS DEFINIDAS EM src.variaveis.definicaovariaveis ###
     global dic_instancia # armazena todas as informações básicas de uma instância. Informações lidas dos arquivos de entrada.
-    global dic_configuracoes
     
-    ### Carrega do arquivo ./configuracoes.py os parâmetros que caracterizam a execução do programa 
-    parametros_de_execucao = dic_configuracoes
+    ### Carrega do arquivo ./executar.config os parâmetros que caracterizam a execução do programa 
+    parametros_de_execucao = leituraconfiguracoes.leitura_config('executar.config')
     #print(parametros_de_execucao, end='\n\n\n')
 
     ### Carrega do arquivo INPUT/input.config as instâncias a serem processadas
