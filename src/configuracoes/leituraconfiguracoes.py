@@ -1,5 +1,5 @@
 import os
-
+from bin.configuracoes import *
 
 ###############################################################################
 
@@ -32,28 +32,20 @@ def leitura_input(config):
 ###############################################################################
 
 
-
 ###############################################################################
-# Funcao de leitura arquivo 'input.config'.
-# Funcao le arquivo de entrada com nomes dos arq '.dat' a serem lidos,
-# armazena nomes de entrada seguidos de 1 e ignora os  seguidos de 0
-# retorna uma lista com os nomes de arquivos a serem lidos.
 
-def leitura_config(config):
+def leitura_config():
     """ Funcao de leitura de configuracao
-        Le o arquivo 'executar.config' com os parametros a serem executados
+        Le o arquivo 'configuracoes.py' com os parametros a serem executados
         Verifica se eh 1 (True) ou (0) False
         E armazena numa lista os parametros
     """
-
+    
+    global dic_configuracoes
+    
     funcoes = []
-    file = open(config)
-    linha = file.readline()
-    while linha:
-        if not linha.startswith("###"):
-            valor = linha.split()
-            if valor[1] == '1':
-                funcoes.append(valor[0])
-        linha = file.readline()
+    for parametro in dic_configuracoes:
+        if dic_configuracoes[parametro] == 1:
+            funcoes.append(parametro)
     return funcoes
 ###############################################################################

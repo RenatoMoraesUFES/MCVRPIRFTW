@@ -15,10 +15,12 @@
 ### (9) Grafo_prop
 ### Uma funcao principal para controle de fluxo
 ### (10) main
-imprime_distancia          0
-imprime_janelas_tempo      0
-imprime_prop               0
-imprime_qual_bicicleta     0
-escrita                    1
-grafo_distancia            1
-grafo_caixas_do_cliente    1
+dic_configuracoes = {
+    'imprime_distancia'         : 0,
+    'imprime_janelas_tempo'     : 0,
+    'imprime_prop'              : 0,
+    'imprime_qual_bicicleta'    : 0,
+    'escrita'                   : 1,
+    'grafo_distancia'           : 1,
+    'grafo_caixas_do_cliente'   : 1
+    }

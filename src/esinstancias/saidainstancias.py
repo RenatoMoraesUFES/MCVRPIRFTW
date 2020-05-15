@@ -1,5 +1,6 @@
 import os
-
+import networkx as nx
+import matplotlib.pyplot as plt
 
 ###############################################################################
 
@@ -51,6 +52,22 @@ def grafo_distancia(dic_instancia):
         Gera um grafo para a lista de listas (matriz) 'distancia' pelo graphviz
     """
 
+    ### OPCAO 1 COM NETWORKX EM PROCESSO ###
+    '''grafo_dist = nx.Graph()
+    
+    for i in range(len(dic_instancia['distancia'])-2):
+        for j in range(len(dic_instancia['distancia'][i])-1):
+            if i != j and dic_instancia['distancia'][i][j] != 9999:
+                if dic_instancia['distancia'][i][j] < 2:
+                    grafo_dist.add_edge(i,j, value=dic_instancia['distancia'][i][j])
+
+    pos = nx.shell_layout(grafo_dist)
+    nx.draw(grafo_dist, pos, with_labels=1)
+    nx.draw_networkx_edge_labels(grafo_dist, pos)
+    #plt.text(0,1,str(grafo_dist.size(weight='value')), fontdict=None)
+    plt.show()'''
+
+    ### OPCAO 2 COM GRAPHVIZ EM PROCESSO (MAIS AVANCADO) ###
     caminho = 'OUTPUT'
     name = dic_instancia["nome_instancia"]
     distancia = dic_instancia["distancia"]
@@ -61,7 +78,11 @@ def grafo_distancia(dic_instancia):
     arq = open(file, 'w')
     #primeira linha como padrao da linguagem
     arq.write('strict graph {\nsplines="compound"\n')
+    #arq.write('0 [pos="0,0!"];\n')  ### fixar armazem central no centro
     for i in range(len(distancia)-1):
+        ### 'if' para fixar posicao dos nós; preciso trabalhar na posicao
+        #if i != 0 and i != len(distancia)-1:
+            #arq.write(str(i) + f' [pos="{i},{i}!"];\n')
         for j in range(len(distancia[i])-1):
             #ignoro as distancias entre si mesmos e as 'infinitas' ditas '9999'
             if not i == j and distancia[i][j] != 9999:
@@ -81,8 +102,8 @@ def grafo_distancia(dic_instancia):
     
     os.chdir('OUTPUT')
     os.system('dot ' + name + '_DIST.dot -Tpng -o' + name + '_DIST.png')
-    #os.system('dot -Kfdp -n -Tpng -o'
-     #         + name + '_DIST.png'
+    #os.system('dot -Kfdp -n -Tpng -o '
+     #         + name + '_DIST.png '
       #        + name + '_DIST.dot')
     os.chdir('..')
     #print("\nVerificar arquivo '.png' de saída.\n")
@@ -99,6 +120,20 @@ def grafo_caixas_do_cliente(dic_instancia):
         O grafo mostra quais caixas (j) pertencem a quais clientes (i) em 'prop'
     """
 
+    ### OPCAO 1 COM NETWORKX ###
+    '''grafo_caixas = nx.Graph()
+    for i in range(len(dic_instancia['caixas_do_cliente'])-1):
+        cliente = f"Cliente{i}"
+        for j in range(len(dic_instancia['caixas_do_cliente'][i])):
+            caixa = f"Caixa{j}"
+            if dic_instancia['caixas_do_cliente'][i][j] == 1:
+                grafo_caixas.add_edge(cliente, caixa, value=100)
+    pos = nx.planar_layout(grafo_caixas)
+    nx.draw(grafo_caixas, pos, with_labels=1)
+    plt.text(0,1,str(grafo_caixas.size(weight='value')), fontdict=None)
+    plt.show()'''
+
+    ### OPCAO 2 COM GRAPHVIZ ###
     caminho = 'OUTPUT'
     name = dic_instancia["nome_instancia"]
     prop = dic_instancia["caixas_do_cliente"]

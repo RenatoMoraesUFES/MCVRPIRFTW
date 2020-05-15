@@ -6,8 +6,10 @@ if __name__ == "__main__":
     PACKAGE_PARENT = '..'
     SCRIPT_DIR = os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__))))
     sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
+    os.chdir('../bin')
 
     from src.variaveis.definicaovariaveis import *
+    from bin.configuracoes import *
     from src.configuracoes import leituraconfiguracoes
     from src.esinstancias import entradainstancias
     from src.esinstancias import saidainstancias
@@ -15,6 +17,7 @@ if __name__ == "__main__":
 ### usado apenas como biblioteca 
 else:
     from src.variaveis.definicaovariaveis import *
+    from bin.configuracoes import *
     from src.configuracoes import leituraconfiguracoes
     from src.esinstancias import entradainstancias
     from src.esinstancias import saidainstancias
@@ -29,9 +32,10 @@ def main():
 	    
 	### VARIAVEIS GLOBAIS DEFINIDAS EM src.variaveis.definicaovariaveis ###
     global dic_instancia # armazena todas as informações básicas de uma instância. Informações lidas dos arquivos de entrada.
-
-    ### Carrega do arquivo ./executar.config os parâmetros que caracterizam a execução do programa 
-    parametros_de_execucao = leituraconfiguracoes.leitura_config('executar.config') 
+    global dic_configuracoes
+    
+    ### Carrega do arquivo ./configuracoes.py os parâmetros que caracterizam a execução do programa 
+    parametros_de_execucao = dic_configuracoes
     #print(parametros_de_execucao, end='\n\n\n')
 
     ### Carrega do arquivo INPUT/input.config as instâncias a serem processadas
@@ -50,12 +54,12 @@ def main():
             #print(dic_instancia_corrente, end='\n\n\n')
 
             ### Gera as saidas texto e figuras de acordo com os parametros_de_execucao
-            if 'escrita' in parametros_de_execucao:
+            if parametros_de_execucao['escrita'] == 1:
                 texto = entradainstancias.fazer_copia(dic_instancia_corrente["nome_instancia"] + '.dat')
                 saidainstancias.escrita(texto, dic_instancia_corrente)
-            if 'grafo_distancia' in parametros_de_execucao:
+            if parametros_de_execucao['grafo_distancia'] == 1:
                 saidainstancias.grafo_distancia(dic_instancia_corrente)
-            if 'grafo_caixas_do_cliente' in parametros_de_execucao:
+            if parametros_de_execucao['grafo_caixas_do_cliente'] == 1:
                 saidainstancias.grafo_caixas_do_cliente(dic_instancia_corrente)
 
             ##### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
