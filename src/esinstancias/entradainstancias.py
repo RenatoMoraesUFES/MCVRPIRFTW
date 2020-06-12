@@ -112,7 +112,8 @@ def carrega_instancia(entrada):
                             except: continue             #continua nos '['
                     #print(listadist)
                     #armazeno a lista em 'distanica'
-                    distancia.append(listadist)
+                    if listadist != []:
+                        distancia.append(listadist)
                 #imprime_distancia(distancia)
             elif (valor[0] == 't'):
                 #leio até a ultima linha das listas

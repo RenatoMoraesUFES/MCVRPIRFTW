@@ -99,7 +99,6 @@ def grafo_distancia(dic_instancia):
     arq.write('}')
     arq.close()
     #print("\nVerificar arquivo '.dot' de saída.\n")
-    
     os.chdir('OUTPUT')
     os.system('dot ' + name + '_DIST.dot -Tpng -o' + name + '_DIST.png')
     #os.system('dot -Kfdp -n -Tpng -o '
@@ -165,3 +164,60 @@ def grafo_caixas_do_cliente(dic_instancia):
     os.chdir('..')
     #print("\nVerificar arquivo '.png' de saída.\n")
 
+###############################################################################
+
+###############################################################################
+
+def grafo_solucao_pcv(dic_instancia, solucao_pcv):
+    """ Esta funcao cria um grafo com os arcos da matriz distancia
+        com enfase na viagem mais curta (solucao do problema do caixeiro
+        viajante) que pode ser feita.
+    """
+    
+    caminho = 'OUTPUT'
+    name = dic_instancia["nome_instancia"]
+    distancia = dic_instancia["distancia"]
+    if not os.path.exists(caminho):
+        os.makedirs(caminho)
+    file = caminho + '/' + name + '_solucao_pcv.dot'
+    #abro um arquivo '.dot' para linguagem graphviz
+    arq = open(file, 'w')
+    #primeira linha como padrao da linguagem
+    arq.write('strict graph {\n')
+    
+    for i in range(len(distancia)-1):
+        for j in range(i, len(distancia[i])-1):
+            #ignoro as distancias entre si mesmos e as 'infinitas' ditas '9999'
+            if i != j:
+                if j == solucao_pcv[solucao_pcv.index(i)+1]:
+                    arq.write(str(i)
+                              + '--'
+                              + str(j)
+                              + ' [label =  "'
+                              + "%.3f" %distancia[i][j]
+                              + 'km"];\n')
+                elif j == solucao_pcv[solucao_pcv.index(i)-1]:
+                    arq.write(str(i)
+                              + '--'
+                              + str(j)
+                              + ' [label = "'
+                              + "%.3f" %distancia[i][j]
+                              + 'km"];\n')
+                else:
+                    #aresta como vertice os indices da matriz distancia
+                    arq.write(str(i) + '--' + str(j) + ' [color=grey];\n')
+            
+    arq.write('}')
+    arq.close()
+    #print("\nVerificar arquivo '.dot' de saída.\n")
+    
+    os.chdir('OUTPUT')
+    os.system('dot ' + name + '_solucao_pcv.dot -Tpng -o' + name + '_solucao_pcv.png')
+    #os.system('dot -Kfdp -n -Tpng -o '
+     #         + name + '_solucao_pcv.png '
+      #        + name + '_solucao_pcv.dot')
+    os.chdir('..')
+    #print("\nVerificar arquivo '.png' de saída.\n")
+
+    # codigo acima equivale a execucao no terminal:
+    # -> dot nomedoarquivo.dot -Tpng -o nomedografo.png
