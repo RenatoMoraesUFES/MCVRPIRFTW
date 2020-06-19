@@ -19,6 +19,7 @@ else:
     from src.configuracoes import leituraconfiguracoes
     from src.esinstancias import entradainstancias
     from src.esinstancias import saidainstancias
+    from src.algoritmos import algoritmosPCV
 
 ###############################################################################
 # Funcao principal para controle do fluxo do programa
@@ -33,11 +34,11 @@ def main():
     
     ### Carrega do arquivo ./executar.config os parâmetros que caracterizam a execução do programa 
     parametros_de_execucao = leituraconfiguracoes.leitura_config('executar.config')
-    print(parametros_de_execucao, end='\n\n\n')
+    #print(parametros_de_execucao, end='\n\n\n')
 
     ### Carrega do arquivo INPUT/input.config as instâncias a serem processadas
     lista_de_instancias = leituraconfiguracoes.leitura_input('input.config') 
-    print(lista_de_instancias, end='\n\n\n')
+    #print(lista_de_instancias, end='\n\n\n')
     
     
     ### processa todas as instâncias da lista. Uma de cada vez, carregada em instancia_corrente
@@ -47,7 +48,7 @@ def main():
 			### Dada a instancia_corrente, abro o arquivo .dat e carrego seus dados na memória (dicionario global dic_instancia)
             dic_instancia = entradainstancias.carrega_instancia(instancia_corrente + '.dat')
             dic_instancia_corrente = dic_instancia
-            print(dic_instancia, end='\n\n\n')
+            #print(dic_instancia, end='\n\n\n')
             #print(dic_instancia_corrente, end='\n\n\n')
 
             ### Gera as saidas texto e figuras de acordo com os parametros_de_execucao
@@ -59,15 +60,18 @@ def main():
             #if parametros_de_execucao['grafo_caixas_do_cliente'] == 1:
             #    saidainstancias.grafo_caixas_do_cliente(dic_instancia_corrente)
 
-            ##### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
+            dic_solucao_corrente = algoritmosPCV.ConstrutivoMenorDistancia(dic_instancia_corrente, parametros_de_execucao)
+            
+            #### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
             
             ##### saidasolucao.cria_grafos(dic_instancia_corrente,dic_solucao_corrente, configuracoes)
             ##### saidasolucao.cria_tabelas(dic_instancia_corrente,dic_solucao_corrente, configuracoes)
             ##### saidasolucao.cria_graficos(dic_instancia_corrente,dic_solucao_corrente, configuracoes)
             ##### saidasolucao.cria_estatisticas(dic_instancia_corrente,dic_solucao_corrente, configuracoes)
 
-        except:
+        except Exception as e:
             print(f"\nErro em {instancia_corrente}.\n")
+            print(e)
             continue
     print("\nFim.\n")
 ###############################################################################
