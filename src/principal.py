@@ -33,11 +33,11 @@ def main():
     
     ### Carrega do arquivo ./executar.config os parâmetros que caracterizam a execução do programa 
     parametros_de_execucao = leituraconfiguracoes.leitura_config('executar.config')
-    #print(parametros_de_execucao, end='\n\n\n')
+    print(parametros_de_execucao, end='\n\n\n')
 
     ### Carrega do arquivo INPUT/input.config as instâncias a serem processadas
     lista_de_instancias = leituraconfiguracoes.leitura_input('input.config') 
-    #print(lista_de_instancias, end='\n\n\n')
+    print(lista_de_instancias, end='\n\n\n')
     
     
     ### processa todas as instâncias da lista. Uma de cada vez, carregada em instancia_corrente
@@ -47,7 +47,7 @@ def main():
 			### Dada a instancia_corrente, abro o arquivo .dat e carrego seus dados na memória (dicionario global dic_instancia)
             dic_instancia = entradainstancias.carrega_instancia(instancia_corrente + '.dat')
             dic_instancia_corrente = dic_instancia
-            #print(dic_instancia, end='\n\n\n')
+            print(dic_instancia, end='\n\n\n')
             #print(dic_instancia_corrente, end='\n\n\n')
 
             ### Gera as saidas texto e figuras de acordo com os parametros_de_execucao
@@ -56,8 +56,8 @@ def main():
                 saidainstancias.escrita(texto, dic_instancia_corrente)
             if parametros_de_execucao['grafo_distancia'] == 1:
                 saidainstancias.grafo_distancia(dic_instancia_corrente)
-            if parametros_de_execucao['grafo_caixas_do_cliente'] == 1:
-                saidainstancias.grafo_caixas_do_cliente(dic_instancia_corrente)
+            #if parametros_de_execucao['grafo_caixas_do_cliente'] == 1:
+            #    saidainstancias.grafo_caixas_do_cliente(dic_instancia_corrente)
 
             ##### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
             
