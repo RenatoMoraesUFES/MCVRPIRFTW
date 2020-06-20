@@ -77,7 +77,7 @@ def grafo_distancia(dic_instancia):
     #abro um arquivo '.dot' para linguagem graphviz
     arq = open(file, 'w')
     #primeira linha como padrao da linguagem
-    arq.write('strict graph {\nsplines="compound"\n')
+    arq.write('strict graph {\n')
     #arq.write('0 [pos="0,0!"];\n')  ### fixar armazem central no centro
     for i in range(len(distancia)-1):
         ### 'if' para fixar posicao dos nós; preciso trabalhar na posicao
@@ -86,16 +86,13 @@ def grafo_distancia(dic_instancia):
         for j in range(len(distancia[i])-1):
             #ignoro as distancias entre si mesmos e as 'infinitas' ditas '9999'
             if not i == j and distancia[i][j] != 9999:
-                if distancia[i][j] > 1.655:
-                    arq.write(str(i) + '--' + str(j) + ' [color=grey];\n')
-                else:
-                    #aresta como vertice os indices da matriz distancia
-                    arq.write(str(i)
-                              + '--'
-                              + str(j)
-                              + ' [label =  "'
-                              + "%.3f" %distancia[i][j]
-                              + 'km"];\n')
+                #aresta como vertice os indices da matriz distancia
+                arq.write(str(i)
+                            + '--'
+                            + str(j)
+                            + ' [label =  "'
+                            + "%.3f" %distancia[i][j]
+                            + 'km"];\n')
     arq.write('}')
     arq.close()
     #print("\nVerificar arquivo '.dot' de saída.\n")

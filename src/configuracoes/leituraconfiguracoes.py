@@ -20,11 +20,12 @@ def leitura_input(config):
         print("Arquivo 'input.config' não encontrado no diretório.")
     linha = file.readline()
     while linha:
-        valor = linha.split()
-        if valor[1] == '1':
-            aux = valor[0]
-            aux = aux[:-4]
-            arquivos.append(aux)
+        if not linha.startswith("#") and len(linha) > 1:
+            valor = linha.split()
+            if valor[1] == '1':
+                aux = valor[0]
+                aux = aux[:-4]
+                arquivos.append(aux)
         linha = file.readline()
     os.chdir('..')
     return arquivos
@@ -52,7 +53,7 @@ def leitura_config(config):
     file = open(config)
     linha = file.readline()
     while linha:
-        if not linha.startswith("#"):
+        if not linha.startswith("#") and len(linha) > 1:
             valor = linha.split()
             if valor[1] == '1':
                 dic_configuracoes[valor[0]] = 1
