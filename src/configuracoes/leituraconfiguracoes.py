@@ -20,11 +20,12 @@ def leitura_input(config):
         print("Arquivo 'input.config' não encontrado no diretório.")
     linha = file.readline()
     while linha:
-        valor = linha.split()
-        if valor[1] == '1':
-            aux = valor[0]
-            aux = aux[:-4]
-            arquivos.append(aux)
+        if not linha.startswith("#") and len(linha) > 1:
+            valor = linha.split()
+            if valor[1] == '1':
+                aux = valor[0]
+                aux = aux[:-4]
+                arquivos.append(aux)
         linha = file.readline()
     os.chdir('..')
     return arquivos
@@ -35,7 +36,7 @@ def leitura_input(config):
 
 def leitura_config(config):
     """ Funcao de leitura de configuracao
-        Le o arquivo 'configuracoes.py' com os parametros a serem executados
+        Le o arquivo 'executar.config' com os parametros a serem executados
         Verifica se eh 1 (True) ou (0) False
         E armazena numa lista os parametros
     """
@@ -49,10 +50,13 @@ def leitura_config(config):
         'grafo_distancia'           : {},
         'grafo_caixas_do_cliente'   : {}
         }
-    file = open(config)
+    try:
+        file = open(config)
+    except:
+        print("Arquivo 'executar.config' não encontrado no diretório.")
     linha = file.readline()
     while linha:
-        if not linha.startswith("#"):
+        if not linha.startswith("#") and len(linha) > 1:
             valor = linha.split()
             if valor[1] == '1':
                 dic_configuracoes[valor[0]] = 1

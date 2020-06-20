@@ -233,8 +233,8 @@ def carrega_instancia(entrada):
     fhand.close()
     os.chdir('..')
     dic_instancia = {
-    'nome_instancia'          : entrada[:entrada.find('.dat')],   #             # nome do arquivo .dat da instancia
-    'clientes'                : nos,       # 'nos'       # quantidade de clientes (int) 
+        'nome_instancia'          : entrada[:entrada.find('.dat')],   #             # nome do arquivo .dat da instancia
+        'clientes'                : nos,       # 'nos'       # quantidade de clientes (int) 
 	'facilidades'             : nosf,      # 'nosf'      # quantidade facilidades (int)
 	'num_veiculo_frota'       : m,         # 'm'         # numero de veiculos da frota(int) 
 	'num_max_compartimentos'  : ncp,       # 'ncp'       # número máximo de compartimentos(int) 
