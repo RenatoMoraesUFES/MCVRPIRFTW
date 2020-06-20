@@ -63,7 +63,7 @@ def main():
                 saidainstancias.grafo_caixas_do_cliente(dic_instancia_corrente)
 
             solucao_pcv, custo_pcv = construtivopcv.pcv(dic_instancia_corrente)
-            #print(f"Solucao {instancia_corrente} = {solucao_pcv} com custo = %.3f\n" %custo_pcv)
+            print(f"Solucao {instancia_corrente} = {solucao_pcv} com custo = %.3f\n" %custo_pcv)
             saidainstancias.grafo_solucao_pcv(dic_instancia_corrente, solucao_pcv)
 
             ##### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
