@@ -79,7 +79,7 @@ def grafo_distancia(dic_instancia):
     #primeira linha como padrao da linguagem
     arq.write('strict graph {\n')
     #arq.write('0 [pos="0,0!"];\n')  ### fixar armazem central no centro
-    for i in range(len(distancia)+2):
+    for i in range(len(distancia)-1):
         ### 'if' para fixar posicao dos nós; preciso trabalhar na posicao
         #if i != 0 and i != len(distancia)-1:
             #arq.write(str(i) + f' [pos="{i},{i}!"];\n')
