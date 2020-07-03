@@ -12,6 +12,7 @@ if __name__ == "__main__":
     from src.configuracoes import leituraconfiguracoes
     from src.esinstancias import entradainstancias
     from src.esinstancias import saidainstancias
+    from src.algoritmos import construtivopcv
 
 ### usado apenas como biblioteca 
 else:
@@ -19,6 +20,7 @@ else:
     from src.configuracoes import leituraconfiguracoes
     from src.esinstancias import entradainstancias
     from src.esinstancias import saidainstancias
+    from src.algoritmos import construtivopcv
 
 ###############################################################################
 # Funcao principal para controle do fluxo do programa
@@ -50,6 +52,7 @@ def main():
             #print(dic_instancia, end='\n\n\n')
             #print(dic_instancia_corrente, end='\n\n\n')
 
+            
             ### Gera as saidas texto e figuras de acordo com os parametros_de_execucao
             if parametros_de_execucao['escrita'] == 1:
                 texto = entradainstancias.fazer_copia(dic_instancia_corrente["nome_instancia"] + '.dat')
@@ -58,6 +61,10 @@ def main():
                 saidainstancias.grafo_distancia(dic_instancia_corrente)
             if parametros_de_execucao['grafo_caixas_do_cliente'] == 1:
                 saidainstancias.grafo_caixas_do_cliente(dic_instancia_corrente)
+
+            solucao_pcv, custo_pcv = construtivopcv.pcv(dic_instancia_corrente)
+            #print(f"Solucao {instancia_corrente} = {solucao_pcv} com custo = %.3f\n" %custo_pcv)
+            saidainstancias.grafo_solucao_pcv(dic_instancia_corrente, solucao_pcv)
 
             ##### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
             

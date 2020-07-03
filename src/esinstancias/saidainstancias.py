@@ -181,12 +181,20 @@ def grafo_solucao_pcv(dic_instancia, solucao_pcv):
     arq = open(file, 'w')
     #primeira linha como padrao da linguagem
     arq.write('strict graph {\n')
-    
+
+
     for i in range(len(distancia)-1):
         for j in range(i, len(distancia[i])-1):
             #ignoro as distancias entre si mesmos e as 'infinitas' ditas '9999'
             if i != j:
-                if j == solucao_pcv[solucao_pcv.index(i)+1]:
+                if i == 0 and j == solucao_pcv[len(solucao_pcv)-2]:
+                    arq.write(str(i)
+                              +'--'
+                              + str(j)
+                              + ' [label =  "'
+                              + "%.3f" %distancia[0][solucao_pcv[len(solucao_pcv)-2]]
+                              + 'km"];\n')
+                elif j == solucao_pcv[solucao_pcv.index(i)+1]:
                     arq.write(str(i)
                               + '--'
                               + str(j)
