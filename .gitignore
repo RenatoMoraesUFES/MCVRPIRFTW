@@ -1,6 +1,6 @@
 #project input/output
-bin/INPUT/
-bin/OUTPUT/
+#bin/INPUT/
+#bin/OUTPUT/
 
 
 # Byte-compiled / optimized / DLL files
