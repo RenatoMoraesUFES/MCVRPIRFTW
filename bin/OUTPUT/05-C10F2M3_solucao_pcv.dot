@@ -10,7 +10,7 @@ strict graph {
 0--9 [color=grey];
 0--10 [color=grey];
 0--11 [color=grey];
-0--12 [color=grey];
+0--12 [label =  "3.200km"];
 0--13 [color=grey];
 0--14 [color=grey];
 1--2 [color=grey];

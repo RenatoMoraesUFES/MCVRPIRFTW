@@ -73,8 +73,9 @@ def main():
             ##### saidasolucao.cria_graficos(dic_instancia_corrente,dic_solucao_corrente, configuracoes)
             ##### saidasolucao.cria_estatisticas(dic_instancia_corrente,dic_solucao_corrente, configuracoes)
 
-        except:
+        except Exception as e:
             print(f"\nErro em {instancia_corrente}.\n")
+            print (e)
             continue
     print("\nFim.\n")
 ###############################################################################
