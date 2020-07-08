@@ -36,7 +36,10 @@ def menordistancia (dic_instancia, configuracoes):
         print("Custo da viagem: R$", custo)
         print("Cidades que ainda precisam ser visitadas: ",N)
         print("Localização atual: Cidade ", i)
-        distancia_corrente=D[i]     #recebe os valores da ultima coluna(cidade) para que seja identificado o valor de retorno para a cidade de partida
-        custo+=distancia_corrente[1]   #recebe o valor referente a viagem do ultimo ponto ate o ponto de partida
-        return dic_instancia #envia a função para o local que for chamada  
+    distancia_corrente=D[i]     #recebe os valores da ultima coluna(cidade) para que seja identificado o valor de retorno para a cidade de partida
+    custo+=distancia_corrente[1]   #recebe o valor referente a viagem do ultimo ponto ate o ponto de partida
+    print("Cidades visitadas: ", visitadas)
+    print("Custo total da viagem R$",custo)
+    
+    return dic_instancia #envia a função para o local que for chamada  
 
