@@ -13,6 +13,7 @@ if __name__ == "__main__":
     from src.esinstancias import entradainstancias
     from src.esinstancias import saidainstancias
     from src.algoritmos import construtivopcv
+    from src.algoritmos import buscalocalpcv
 
 ### usado apenas como biblioteca 
 else:
@@ -21,7 +22,8 @@ else:
     from src.esinstancias import entradainstancias
     from src.esinstancias import saidainstancias
     from src.algoritmos import construtivopcv
-
+    from src.algoritmos import buscalocalpcv
+    
 ###############################################################################
 # Funcao principal para controle do fluxo do programa
 
@@ -63,9 +65,10 @@ def main():
                 saidainstancias.grafo_caixas_do_cliente(dic_instancia_corrente)
 
             solucao_pcv, custo_pcv = construtivopcv.pcv(dic_instancia_corrente)
-            #print(f"Solucao {instancia_corrente} = {solucao_pcv} com custo = %.3f\n" %custo_pcv)
+            print(f"Solucao {instancia_corrente} = {solucao_pcv} com custo = %.3f\n" %custo_pcv)
             saidainstancias.grafo_solucao_pcv(dic_instancia_corrente, solucao_pcv)
-
+            buscalocalpcv.bl_perm(dic_instancia_corrente, solucao_pcv, custo_pcv)
+            
             ##### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
             
             ##### saidasolucao.cria_grafos(dic_instancia_corrente,dic_solucao_corrente, configuracoes)
@@ -74,8 +77,8 @@ def main():
             ##### saidasolucao.cria_estatisticas(dic_instancia_corrente,dic_solucao_corrente, configuracoes)
 
         except Exception as e:
-            print(f"\nErro em {instancia_corrente}.\n")
-            print(e)
+            print(f"\nErro em {instancia_corrente}.")
+            print(e, "\n")
             continue
     print("\nFim.\n")
 ###############################################################################
