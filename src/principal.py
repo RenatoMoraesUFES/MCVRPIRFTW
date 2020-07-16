@@ -19,6 +19,7 @@ else:
     from src.configuracoes import leituraconfiguracoes
     from src.esinstancias import entradainstancias
     from src.esinstancias import saidainstancias
+    from src.algoritmos import PCValgoritmo
 
 ###############################################################################
 # Funcao principal para controle do fluxo do programa
@@ -56,9 +57,10 @@ def main():
                 saidainstancias.escrita(texto, dic_instancia_corrente)
             if parametros_de_execucao['grafo_distancia'] == 1:
                 saidainstancias.grafo_distancia(dic_instancia_corrente)
-            if parametros_de_execucao['grafo_caixas_do_cliente'] == 1:
-                saidainstancias.grafo_caixas_do_cliente(dic_instancia_corrente)
+            #if parametros_de_execucao['grafo_caixas_do_cliente'] == 1:
+            #    saidainstancias.grafo_caixas_do_cliente(dic_instancia_corrente)
 
+            dic_solucao_corrente = PCValgoritmo.menordistancia(dic_instancia_corrente, parametros_de_execucao)
             ##### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
             
             ##### saidasolucao.cria_grafos(dic_instancia_corrente,dic_solucao_corrente, configuracoes)
@@ -66,8 +68,9 @@ def main():
             ##### saidasolucao.cria_graficos(dic_instancia_corrente,dic_solucao_corrente, configuracoes)
             ##### saidasolucao.cria_estatisticas(dic_instancia_corrente,dic_solucao_corrente, configuracoes)
 
-        except:
+        except Exception as e:
             print(f"\nErro em {instancia_corrente}.\n")
+            print(e)
             continue
     print("\nFim.\n")
 ###############################################################################
