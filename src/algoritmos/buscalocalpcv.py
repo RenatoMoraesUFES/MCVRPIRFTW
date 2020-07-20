@@ -56,14 +56,14 @@ def bl_2otp(dic_instancia, solucao_pcv, custo_pcv):
                 aux = solucao_atual[i]
                 solucao_atual[i] = solucao_atual[j]
                 solucao_atual[j] = aux
-                print(i)
-                print("atual: ", solucao_atual)
-                print("pcv: ", solucao_pcv)
+                #print(i)
+                #print("atual: ", solucao_atual)
+                #print("pcv: ", solucao_pcv)
                 novo_custo = (custo_pcv - distancia[solucao_pcv[i-1]][solucao_pcv[i]]
                                         - distancia[solucao_pcv[j]][solucao_pcv[j+1]]
                                         + distancia[solucao_atual[i-1]][solucao_atual[i]]
                                         + distancia[solucao_atual[j]][solucao_atual[j+1]])
-                print('novo custo: ', novo_custo)          
+                #print('novo custo: ', novo_custo)          
                 if novo_custo < melhor_custo and novo_custo > 0:
                     melhor_custo = novo_custo
                     melhor_solucao = solucao_atual
