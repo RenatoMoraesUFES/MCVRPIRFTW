@@ -18,7 +18,7 @@ def buscalocalcaxeiro(dic_instancia,visitadas,custo):
   n=len(solucaoviavel) #guarda o valor do tamanho da lista analisada
   #print('n:',n)
   j=0
-  i=0
+  i=1
 
 
   while melhoria:
@@ -36,9 +36,11 @@ def buscalocalcaxeiro(dic_instancia,visitadas,custo):
 
       for k in range(0,n):  #Esse bloco recalcula o custo da viagem
         j=k+1
-        if j== n:
-          chegada=solucao[k-n]
-          novocusto+=distancias[k][chegada]
+        if j==n:
+          chegada=solucao[0]
+          partida=solucao[k]
+          novocusto+=distancias[partida][chegada]
+          #print('distancia corrente', distancias[k][chegada])
           #print('Novo custo: R$', novocusto)
         else:
           partida=solucao[k]
@@ -46,7 +48,7 @@ def buscalocalcaxeiro(dic_instancia,visitadas,custo):
           chegada=solucao[j]
           #print('chegada:',chegada)
           novocusto+=distancias[partida][chegada]  #encontra o valor da viagem utilizando a posicao da cidade de partida e de chegada na matriz
-          #print('Novo custo: R$', novocusto)
+          #print('distancia corrente', distancias[partida][chegada])
       #print('Novo custo: R$', novocusto,"\n")
 
 
