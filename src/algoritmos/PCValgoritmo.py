@@ -4,11 +4,11 @@ def menordistancia (dic_instancia, configuracoes):
 
     D= dic_instancia["distancia"]
     #print("\n","D: ", D, "\n")
-    visitadas=[4] #cidades que o caxeiro já passou
+    visitadas=[0] #cidades que o caxeiro já passou
     custo=0       #Custo da viagem
     N=list(range(0,len(D)-1)) #lista as cidades que faltam ser visitadas
-    N.remove(4)                      #Remove a primeira cidade pois é de onde o caxeiro está partindo
-    i=4
+    N.remove(0)                      #Remove a primeira cidade pois é de onde o caxeiro está partindo
+    i=0
     #print("Cidades visitadas: ", visitadas)
     #print("Custo da viagem: R$", custo)
     #print("Cidades que ainda precisam ser visitadas: ",N)
@@ -45,7 +45,7 @@ def menordistancia (dic_instancia, configuracoes):
         #print("Cidades que ainda precisam ser visitadas: ",N)
         #print("Localização atual: Cidade ", i, "\n")
     distancia_corrente=D[i] [:]    #recebe os valores da ultima coluna(cidade) para que seja identificado o valor de retorno para a cidade de partida
-    custo+=distancia_corrente[4]   #recebe o valor referente a viagem do ultimo ponto ate o ponto de partida
+    custo+=distancia_corrente[0]   #recebe o valor referente a viagem do ultimo ponto ate o ponto de partida
     #print("Cidades visitadas: ", visitadas)
     #print("Custo total da viagem R$",custo)
 
