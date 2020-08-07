@@ -13,6 +13,7 @@ if __name__ == "__main__":
     from src.esinstancias import entradainstancias
     from src.esinstancias import saidainstancias
     from src.algoritmos import construtivopcv
+    from src.algoritmos import construtivo_sam
 
 ### usado apenas como biblioteca 
 else:
@@ -21,6 +22,7 @@ else:
     from src.esinstancias import entradainstancias
     from src.esinstancias import saidainstancias
     from src.algoritmos import construtivopcv
+    from src.algoritmos import construtivo_sam
 
 ###############################################################################
 # Funcao principal para controle do fluxo do programa
@@ -66,6 +68,8 @@ def main():
             #print(f"Solucao {instancia_corrente} = {solucao_pcv} com custo = %.3f\n" %custo_pcv)
             saidainstancias.grafo_solucao_pcv(dic_instancia_corrente, solucao_pcv)
 
+            construtivo_sam.construtivo(dic_instancia_corrente)
+            
             ##### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
             
             ##### saidasolucao.cria_grafos(dic_instancia_corrente,dic_solucao_corrente, configuracoes)
