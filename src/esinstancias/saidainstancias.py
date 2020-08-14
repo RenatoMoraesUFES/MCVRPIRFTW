@@ -174,6 +174,7 @@ def grafo_solucao_pcv(dic_instancia, solucao_pcv):
     caminho = 'OUTPUT'
     name = dic_instancia["nome_instancia"]
     distancia = dic_instancia["distancia"]
+    nosf = dic_instancia["facilidades"]
     if not os.path.exists(caminho):
         os.makedirs(caminho)
     file = caminho + '/' + name + '_solucao_pcv.dot'
@@ -183,8 +184,8 @@ def grafo_solucao_pcv(dic_instancia, solucao_pcv):
     arq.write('strict graph {\n')
 
 
-    for i in range(len(distancia)-1):
-        for j in range(i, len(distancia[i])-1):
+    for i in range(len(distancia)-nosf-1):
+        for j in range(i, len(distancia[i])-nosf-1):
             #ignoro as distancias entre si mesmos e as 'infinitas' ditas '9999'
             if i != j:
                 if i == 0 and j == solucao_pcv[len(solucao_pcv)-2]:

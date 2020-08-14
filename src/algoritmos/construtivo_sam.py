@@ -1,4 +1,4 @@
-def construtivo(dic_instancia):
+def construtivo(dic_instancia, solucao_bl2, custo_bl2):
     """ Esta função lê o dicionário da instância de entrada e
         retorna a solução final do problema MCVRPIRFTW que
         pretende encontrar uma rota com o menor custo possível
@@ -21,9 +21,27 @@ def construtivo(dic_instancia):
     #busco também os volumes de cada caixa dos clientes
     volume_caixa = dic_instancia["volume_caixa"]
     #busco volume máximo dos compartimentos das bicicletas
-    volume_maximo = 5
+    volume_maximo = 20
     #busco o numero de facilidades na instancia
     nosf = dic_instancia["facilidades"]
+
+    volume = 0
+    novo_custo = custo_bl2
+    for cliente in range(1, len(solucao_bl2)):
+        for caixa in range(len(copia_prop[solucao_bl2[cliente]])):
+            if copia_prop[solucao_bl2[cliente]][caixa] == 1:
+                volume += volume_caixa[caixa]
+            if volume >= volume_maximo:
+                solucao_bl2.insert(cliente+1, len(distancia)-3)
+                volume = 0
+                novo_custo = (novo_custo
+                              -distancia[cliente][cliente+1]
+                              +distancia[cliente][-2]
+                              +distancia[cliente+1][-2])
+    print(solucao_bl2)
+    print(novo_custo)
+                              
+    """
     #crio uma matriz para salvar as economias feitas ao colocar
     #os arcos i e j na mesma rota
     economia = []
@@ -118,5 +136,7 @@ def construtivo(dic_instancia):
         for item in linha:
             print(" %.2f " %item, end='')
         print("\n")
+        """
+    
             
             

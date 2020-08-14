@@ -4,14 +4,14 @@ def pcv(dic_instancia):
         do problema MCVRPIRFTW interpretando as distancias do
         arco ij como o custo da viagem.
     """
-
+    nosf = dic_instancia["facilidades"]
     copia_dist= []
-    for linha in range(len(dic_instancia["distancia"])):
+    for linha in range(len(dic_instancia["distancia"])-nosf):
         copia_linha = []
-        for item in dic_instancia["distancia"][linha]:
-            copia_linha.append(item)
+        for item in range(len(dic_instancia["distancia"])-nosf):
+            copia_linha.append(dic_instancia["distancia"][linha][item])
         copia_dist.append(copia_linha) #faco uma copia da matriz distancia para fazer alteracoes futuras
-    
+    #print(copia_dist)
     H = [0]  #H recebe os indices dos nós já na solução (inicia em 0, que é o armz central)
     L = 0    #L recebe o custo total da viagem até o momento
     #N recebe os nós que ainda não estão na solucao, lenght de distancia tem o -1 para ignorar o armazem virtual
