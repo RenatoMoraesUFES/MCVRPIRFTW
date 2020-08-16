@@ -15,6 +15,7 @@ if __name__ == "__main__":
     from src.algoritmos import construtivopcv
     from src.algoritmos import construtivo_sam
     from src.algoritmos import buscalocalpcv
+    from src.algoritmos import saving
 
 ### usado apenas como biblioteca 
 else:
@@ -25,6 +26,7 @@ else:
     from src.algoritmos import construtivopcv
     from src.algoritmos import construtivo_sam
     from src.algoritmos import buscalocalpcv
+    from src.algoritmos import saving
 
 ###############################################################################
 # Funcao principal para controle do fluxo do programa
@@ -75,9 +77,9 @@ def main():
             saidainstancias.grafo_solucao_pcv(dic_instancia_corrente, sol_bl_pcv)
 
             sol_bl2_pcv, cust_bl2_pcv = buscalocalpcv.bl_2otp(dic_instancia_corrente, solucao_pcv, custo_pcv)
-            print(f"Solucao BL2 {instancia_corrente} = {sol_bl2_pcv} com custo = %.3f\n" %cust_bl2_pcv)
+            #print(f"Solucao BL2 {instancia_corrente} = {sol_bl2_pcv} com custo = %.3f\n" %cust_bl2_pcv)
 
-            construtivo_sam.construtivo(dic_instancia_corrente, sol_bl2_pcv, cust_bl2_pcv)
+            saving.construtivo(dic_instancia_corrente)
             
             ##### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
             
