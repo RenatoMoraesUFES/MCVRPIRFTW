@@ -14,6 +14,7 @@ if __name__ == "__main__":
     from src.esinstancias import saidainstancias
     from src.algoritmos import construtivopcv
     from src.algoritmos import buscalocal
+    from src.algoritmos import construtivo
 
 ### usado apenas como biblioteca 
 else:
@@ -64,16 +65,19 @@ def main():
             if parametros_de_execucao['grafo_caixas_do_cliente'] == 1:
                 saidainstancias.grafo_caixas_do_cliente(dic_instancia_corrente)
 
-            solucao_pcv, custo_pcv = construtivopcv.pcv(dic_instancia_corrente)
-            print(f"Solucao {instancia_corrente} = {solucao_pcv} com custo = %.3f\n" %custo_pcv)
+            solucao, custo = construtivo.savings(dic_instancia_corrente  )
+            print (solucao)
+            print(custo)
+            # solucao_pcv, custo_pcv = construtivopcv.pcv(dic_instancia_corrente)
+            # print(f"Solucao {instancia_corrente} = {solucao_pcv} com custo = %.3f\n" %custo_pcv)
             #saidainstancias.grafo_solucao_pcv(dic_instancia_corrente, solucao_pcv)
 
-            solucao_bl, custo_bl = buscalocal.two_opt(dic_instancia_corrente, solucao_pcv, custo_pcv)
-            print(f"Solucao {instancia_corrente} = {solucao_bl} com custo = %.3f\n" %custo_bl)
+            # solucao_bl, custo_bl = buscalocal.two_opt(dic_instancia_corrente, solucao_pcv, custo_pcv)
+            # print(f"Solucao {instancia_corrente} = {solucao_bl} com custo = %.3f\n" %custo_bl)
 
-            solucao_bruta, custo_bruta = buscalocal.brute(dic_instancia_corrente)
-            print(f"Solucao {instancia_corrente} = {solucao_bruta} com custo = %.3f\n" %custo_bruta)
-            saidainstancias.grafo_solucao_pcv(dic_instancia_corrente, solucao_bruta)
+            # solucao_bruta, custo_bruta = buscalocal.brute(dic_instancia_corrente)
+            # print(f"Solucao {instancia_corrente} = {solucao_bruta} com custo = %.3f\n" %custo_bruta)
+            # saidainstancias.grafo_solucao_pcv(dic_instancia_corrente, solucao_bruta)
             ##### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
             
             ##### saidasolucao.cria_grafos(dic_instancia_corrente,dic_solucao_corrente, configuracoes)
