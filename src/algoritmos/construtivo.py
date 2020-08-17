@@ -33,7 +33,7 @@ def savings(dic_instancia):
             tem_rota[i], tem_rota[j] = cnt, cnt
             ocupacao_rota[cnt] = vol_cliente[i] + vol_cliente[j]
             cnt += 1
-        elif tem_rota[i] == -1 and ocupacao_rota[tem_rota[j]] + vol_cliente[i] <= cv: # se i nao tem rota e j tem
+        elif tem_rota[i] == -1 and tem_rota[j] != -1 and ocupacao_rota[tem_rota[j]] + vol_cliente[i] <= cv: # se i nao tem rota e j tem
             if j == rota_final[tem_rota[j]][0]: # se j for o primeiro da rota, inserir i antes
                 rota_final[tem_rota[j]] = [i] + rota_final[tem_rota[j]]
             elif j == rota_final[tem_rota[j]][-1]: # se j for o ultimo da rota, inserir i no final
@@ -42,7 +42,7 @@ def savings(dic_instancia):
                 continue
             ocupacao_rota[tem_rota[j]] += vol_cliente[i]
             tem_rota[i] = tem_rota[j]
-        elif tem_rota[j] == -1 and ocupacao_rota[tem_rota[i]] + vol_cliente[j] <= cv: # se j nao tem rota e i tem
+        elif tem_rota[j] == -1 and tem_rota[i] != -1 and ocupacao_rota[tem_rota[i]] + vol_cliente[j] <= cv: # se j nao tem rota e i tem
             if i == rota_final[tem_rota[i]][0]:
                 rota_final[tem_rota[i]] = [j] + rota_final[tem_rota[i]]
             elif i == rota_final[tem_rota[i]][-1]:
