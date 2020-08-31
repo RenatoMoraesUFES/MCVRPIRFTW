@@ -79,7 +79,9 @@ def main():
             sol_bl2_pcv, cust_bl2_pcv = buscalocalpcv.bl_2otp(dic_instancia_corrente, solucao_pcv, custo_pcv)
             #print(f"Solucao BL2 {instancia_corrente} = {sol_bl2_pcv} com custo = %.3f\n" %cust_bl2_pcv)
 
-            saving.construtivo(dic_instancia_corrente)
+            rotas_saving = saving.construtivo(dic_instancia_corrente)
+            saidainstancias.grafo_savings(dic_instancia_corrente, rotas_saving)
+            print(f"Solucao Savings {instancia_corrente} = {rotas_saving}")
             
             ##### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
             

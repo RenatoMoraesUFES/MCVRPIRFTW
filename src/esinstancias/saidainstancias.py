@@ -227,3 +227,70 @@ def grafo_solucao_pcv(dic_instancia, solucao_pcv):
 
     # codigo acima equivale a execucao no terminal:
     # -> dot nomedoarquivo.dot -Tpng -o nomedografo.png
+###############################################################################
+
+###############################################################################
+def grafo_savings(dic_instancia, rotas):
+    """ Esta funcao cria um grafo com os arcos da matriz distancia
+        com enfase na viagem mais curta (solucao do problema do caixeiro
+        viajante) que pode ser feita.
+    """
+    
+    caminho = 'OUTPUT'
+    name = dic_instancia["nome_instancia"]
+    distancia = dic_instancia["distancia"]
+    nosf = dic_instancia["facilidades"]
+    if not os.path.exists(caminho):
+        os.makedirs(caminho)
+    file = caminho + '/' + name + '_solucao_saving.dot'
+    #abro um arquivo '.dot' para linguagem graphviz
+    arq = open(file, 'w')
+    #primeira linha como padrao da linguagem
+    arq.write('strict graph {\n')
+
+    grafo = []
+    
+    for rota in rotas:
+        for i in range(len(rota)-1):
+            if (rota[i], rota[i+1]) not in grafo or (rota[i+1], rota[i]) not in grafo:
+                if rota[i+1] == 0:
+                    arq.write(str(rota[i])
+                              +'--'
+                              + str(rota[i+1])
+                              + ' [label =  "'
+                              + "%.3f" %distancia[rota[i+1]][rota[i]]
+                              + 'km"];\n')
+                    grafo.append((rota[i],rota[i+1]))
+                else:
+                    arq.write(str(rota[i])
+                              +'--'
+                              + str(rota[i+1])
+                              + ' [label =  "'
+                              + "%.3f" %distancia[rota[i]][rota[i+1]]
+                              + 'km"];\n')
+                    grafo.append((rota[i],rota[i+1]))
+                
+
+    for i in range(len(distancia)-nosf-1):
+        for j in range(i, len(distancia)-nosf-1):
+            if i!=j:
+                if (i, j) not in grafo and (j, i) not in grafo:
+                    arq.write(str(i) + '--' + str(j) + ' [color=grey];\n')
+                    grafo.append((i,j))
+
+    print(grafo)
+            
+    arq.write('}')
+    arq.close()
+    #print("\nVerificar arquivo '.dot' de saída.\n")
+    
+    os.chdir('OUTPUT')
+    os.system('dot ' + name + '_solucao_saving.dot -Tpng -o' + name + '_solucao_saving.png')
+    #os.system('dot -Kfdp -n -Tpng -o '
+     #         + name + '_solucao_saving.png '
+      #        + name + '_solucao_saving.dot')
+    os.chdir('..')
+    #print("\nVerificar arquivo '.png' de saída.\n")
+
+    # codigo acima equivale a execucao no terminal:
+    # -> dot nomedoarquivo.dot -Tpng -o nomedografo.png
