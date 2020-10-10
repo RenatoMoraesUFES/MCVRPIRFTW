@@ -19,7 +19,7 @@ def construtivo(dic_instancia):
     #busco o numero de facilidades na instancia
     nosf = dic_instancia["facilidades"]
     ################################################################
-
+    
     ################################################################
     #Loop para percorrer qual caixa pertence a qual cliente
     #E sua respectiva soma de volumes de caixas
@@ -32,14 +32,13 @@ def construtivo(dic_instancia):
             if prop[i][j] == 1:
                 volume += volume_caixa[j]
         volumes_totais.append(volume)
-    print("Volumes totais por cliente = ", volumes_totais)
+    #print("Volumes totais por cliente = ", volumes_totais)
     ################################################################
 
     ################################################################
     #crio uma matriz para salvar as economias feitas ao colocar
     #os arcos i e j na mesma rota
     economia = []
-    dic_economia = {}
     
     #crio um laço para percorrer todas distancias entre os arcos i e j
     #e descobrir as maiores economias entre os nós
@@ -49,19 +48,19 @@ def construtivo(dic_instancia):
                 saving = (distancia[0][i]
                           +distancia[0][j]
                           -distancia[i][j])
-                economia.append(saving)
-                dic_economia[str(saving)] = str(i) + str(j)
+                economia.append((saving,[i,j]))
     economia.sort(reverse=True)
-
-    #print(dic_economia)
-    #print(economia)
-    #print(dic_economia[str(economia[0])])
+    #for linha in economia:
+    #    print(linha)
+    #print('\n')
 
     ################################################################
-    
+
     rotas = []
+    volume = []
     for i in range(1, len(distancia)-1-nosf):
         rotas.append([i])
+        volume.append(volumes_totais[i-1])
         
     ################################################################
 
@@ -80,61 +79,77 @@ def construtivo(dic_instancia):
 
     ################################################################
     
-    def verifica_capacidade(i, j, volume_maximo, volumes_totais, rotas):
-        volume_atual = 0
+    def verifica_capacidade(i, j, volume_maximo, volumes_totais, rotas, volume):
         for rota in rotas:
             if i in rota:
-                for cliente in rota:
-                    volume_atual += volumes_totais[cliente-1]
-            elif j in rota:
-                for cliente in rota:
-                    volume_atual += volumes_totais[cliente-1]
-
-        if volume_atual <= volume_maximo:
-                return True
-
+                pos_i = rotas.index(rota)
+            if j in rota:
+                pos_j= rotas.index(rota)
+        if (volume[pos_i] + volume[pos_j]) <= volume_maximo:
+            return True
         return False
-
+        
     ################################################################
 
-    def mesclar_rotas(i, j, rotas):
+    def mesclar_rotas(i, j, rotas, volume):
         r, s = [], []
         for rota in rotas:
             if rota[0] == j:
                 r = rota
             elif rota[-1] == i:
                 s = rota
+        
+        print(r,s)
 
+
+        pos_r = rotas.index(r)
+        pos_s = rotas.index(s)
+        volume_r = volume[pos_r]
+        volume_s = volume[pos_s]
+        
         rotas.remove(r)
         rotas.remove(s)
         rotas.append(r+s)
+        volume.append(volume_r
+                     +volume_s)
+        volume.remove(volume_r)
+        volume.remove(volume_s)
+        
+        
 
     ################################################################
         
     ################################################################
         
     for i in range(len(economia)):
-        cliente_i = int(dic_economia[str(economia[i])][0])
-        cliente_j = int(dic_economia[str(economia[i])][1])
+        cliente_i = economia[i][1][0]
+        cliente_j = economia[i][1][1]
         if verifica_rota(cliente_i, cliente_j, rotas):
-            if verifica_capacidade(cliente_i, cliente_j, volume_maximo, volumes_totais, rotas):
-                mesclar_rotas(cliente_i, cliente_j, rotas)
+            if verifica_capacidade(cliente_i, cliente_j, volume_maximo, volumes_totais, rotas, volume):
+                mesclar_rotas(cliente_i, cliente_j, rotas, volume)
 
     for rota in rotas:
-        rota.insert(0, 0)
-        rota.append(0)
-    
-    custos = []
+        if 0 not in rota:
+            rota.insert(0, 0)
+            rota.append(0)
+            
+    custo = []
     for rota in rotas:
-        custo = 0
+        custo_corrente = 0
         for i in range(len(rota)-2):
-            custo += distancia[rota[i]][rota[i+1]]
-        custo += distancia[rota[-2]][-1]
-        custos.append(custo)
-    #print(custos)
+            custo_corrente += distancia[rota[i]][rota[i+1]]
+        custo_corrente += distancia[rota[-2]][-1]
+        custo.append(custo_corrente)
 
-    return rotas
+    dic_solucao = {
+        'caminho'   : rotas,
+        'volume'    : volume,
+        'custo'     : custo
+        }
+    
+
+    return dic_solucao
     ################################################################
-    #criar proximas rotas
+
 
     

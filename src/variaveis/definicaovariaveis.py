@@ -19,7 +19,13 @@ dic_instancia = {
     'num_caixa_maior_cliente' : {}, # 'vlc'       # soma dos numeros de caixa do maior cliente (lista de lista float - matriz)
     'custo_fixo_bike'         : {}, # 'ck'        # custo fixo das bicicletas (lista int)
     'custo_km_rodado'         : {}, # 'cd'        # custo por km rodado (lista float)
-}
+    }
+
+dic_solucao = {
+    'caminho'   : [],   # conjunto de nós i e j percorridos pela rota (lista)
+    'volume'    : [],   # volume total de cada cliente pertencente a rota (float)
+    'custo'     : []    # custo total da rota (float)
+    }
 
 ######## Armazenar a entrada como um dicionario (alternativo) ##########
 #dic_entrada = {

@@ -230,12 +230,12 @@ def grafo_solucao_pcv(dic_instancia, solucao_pcv):
 ###############################################################################
 
 ###############################################################################
-def grafo_savings(dic_instancia, rotas):
+def grafo_savings(dic_instancia, dic_solucao):
     """ Esta funcao cria um grafo com os arcos da matriz distancia
         com enfase na viagem mais curta (solucao do problema do caixeiro
         viajante) que pode ser feita.
     """
-    
+    dic_rotas = dic_solucao
     caminho = 'OUTPUT'
     name = dic_instancia["nome_instancia"]
     distancia = dic_instancia["distancia"]
@@ -250,7 +250,7 @@ def grafo_savings(dic_instancia, rotas):
 
     grafo = []
     
-    for rota in rotas:
+    for rota in dic_rotas['caminho']:
         for i in range(len(rota)-1):
             if (rota[i], rota[i+1]) not in grafo or (rota[i+1], rota[i]) not in grafo:
                 if rota[i+1] == 0:
@@ -278,7 +278,7 @@ def grafo_savings(dic_instancia, rotas):
                     arq.write(str(i) + '--' + str(j) + ' [color=grey];\n')
                     grafo.append((i,j))
 
-    print(grafo)
+    #print(grafo)
             
     arq.write('}')
     arq.close()
