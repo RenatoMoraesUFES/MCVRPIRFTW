@@ -92,24 +92,52 @@ def construtivo(dic_instancia):
     ################################################################
 
     def mesclar_rotas(i, j, rotas, volume):
+        '''
         r, s = [], []
         for rota in rotas:
             if rota[0] == j:
                 r = rota
             elif rota[-1] == i:
                 s = rota
+        '''
+
+        r, s = [], []
+        for rota in rotas:
+            if j in rota:
+                r = rota
+            elif i in rota:
+                s = rota
         
-        print(r,s)
-
-
         pos_r = rotas.index(r)
         pos_s = rotas.index(s)
         volume_r = volume[pos_r]
         volume_s = volume[pos_s]
+
+
+        if r[0] == j and s[0] == i:
+            rotas.remove(r)
+            rotas.remove(s)
+            r.reverse()
+            rotas.append(r+s)
+        elif r[-1] == j and s[-1] == i:
+            rotas.remove(r)
+            rotas.remove(s)
+            s.reverse()
+            rotas.append(r+s)
+        elif r[0] == j and s[-1] == i:
+            rotas.remove(r)
+            rotas.remove(s)
+            rotas.append(s+r)
+        elif r[-1] == j and s[0] == i:
+            rotas.remove(r)
+            rotas.remove(s)
+            rotas.append(r+s)
+            
+
         
-        rotas.remove(r)
-        rotas.remove(s)
-        rotas.append(r+s)
+        #rotas.remove(r)
+        #rotas.remove(s)
+        #rotas.append(r+s)
         volume.append(volume_r
                      +volume_s)
         volume.remove(volume_r)
@@ -120,36 +148,101 @@ def construtivo(dic_instancia):
     ################################################################
         
     ################################################################
-        
-    for i in range(len(economia)):
-        cliente_i = economia[i][1][0]
-        cliente_j = economia[i][1][1]
-        if verifica_rota(cliente_i, cliente_j, rotas):
-            if verifica_capacidade(cliente_i, cliente_j, volume_maximo, volumes_totais, rotas, volume):
-                mesclar_rotas(cliente_i, cliente_j, rotas, volume)
 
-    for rota in rotas:
-        if 0 not in rota:
-            rota.insert(0, 0)
-            rota.append(0)
-            
-    custo = []
-    for rota in rotas:
-        custo_corrente = 0
-        for i in range(len(rota)-2):
-            custo_corrente += distancia[rota[i]][rota[i+1]]
-        custo_corrente += distancia[rota[-2]][-1]
-        custo.append(custo_corrente)
+    def paralelo(economia, rotas, volumes_totais, volume_maximo, volume):
+    
+        for i in range(len(economia)):
+            cliente_i = economia[i][1][0]
+            cliente_j = economia[i][1][1]
+            if verifica_rota(cliente_i, cliente_j, rotas):
+                if verifica_capacidade(cliente_i, cliente_j, volume_maximo, volumes_totais, rotas, volume):
+                    mesclar_rotas(cliente_i, cliente_j, rotas, volume)
 
-    dic_solucao = {
-        'caminho'   : rotas,
-        'volume'    : volume,
-        'custo'     : custo
-        }
+        for rota in rotas:
+            if 0 not in rota:
+                rota.insert(0, 0)
+                rota.append(0)
+                
+        custo = []
+        for rota in rotas:
+            custo_corrente = 0
+            for i in range(len(rota)-2):
+                custo_corrente += distancia[rota[i]][rota[i+1]]
+            custo_corrente += distancia[rota[-2]][-1]
+            custo.append(custo_corrente)
+        soma = 0
+        for item in custo:
+            soma +=item
+        custo.append(soma)
+
+        dic_solucao = {
+            'caminho'   : rotas,
+            'volume'    : volume,
+            'custo'     : custo
+            }
     
 
-    return dic_solucao
+        return dic_solucao
+    
     ################################################################
 
+    ################################################################
 
-    
+    def sequencial(economia, rotas, volumes_totais, volume_maximo, volume):
+        
+        conseguiu_mesclar_rotas = True
+        while conseguiu_mesclar_rotas:
+            conseguiu_mesclar_rotas = False
+            rota_corrente = []
+            #print(len(economia))
+            for i in range(len(economia)):
+                #print(i)
+                cliente_i = economia[i][1][0]
+                cliente_j = economia[i][1][1]
+                
+                if rota_corrente == []:
+                    if verifica_rota(cliente_i, cliente_j, rotas):
+                        if verifica_capacidade(cliente_i, cliente_j, volume_maximo, volumes_totais, rotas, volume):
+                            mesclar_rotas(cliente_i, cliente_j, rotas, volume)
+                            rota_corrente = rotas[-1]
+                            #print(rota_corrente, rotas)
+                            conseguiu_mesclar_rotas = True
+                else:
+                    if cliente_i in rota_corrente or cliente_j in rota_corrente:
+                        if verifica_rota(cliente_i, cliente_j, rotas):
+                            if verifica_capacidade(cliente_i, cliente_j, volume_maximo, volumes_totais, rotas, volume):
+                                mesclar_rotas(cliente_i, cliente_j, rotas, volume)
+                                #print(rota_corrente, rotas)
+                                rota_corrente = rotas[-1]
+                                conseguiu_mesclar_rotas = True
+
+        for rota in rotas:
+            if 0 not in rota:
+                rota.insert(0, 0)
+                rota.append(0)
+                
+        custo = []
+        for rota in rotas:
+            custo_corrente = 0
+            for i in range(len(rota)-2):
+                custo_corrente += distancia[rota[i]][rota[i+1]]
+            custo_corrente += distancia[rota[-2]][-1]
+            custo.append(custo_corrente)
+        soma = 0
+        for item in custo:
+            soma +=item
+        custo.append(soma)
+
+        dic_solucao = {
+            'caminho'   : rotas,
+            'volume'    : volume,
+            'custo'     : custo
+            }
+
+
+        return dic_solucao
+
+    #################################################################
+                                             
+    #return paralelo(economia, rotas, volumes_totais, volume_maximo, volume)
+    return sequencial(economia, rotas, volumes_totais, volume_maximo, volume)

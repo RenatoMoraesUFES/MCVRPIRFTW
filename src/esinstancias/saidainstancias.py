@@ -294,3 +294,6 @@ def grafo_savings(dic_instancia, dic_solucao):
 
     # codigo acima equivale a execucao no terminal:
     # -> dot nomedoarquivo.dot -Tpng -o nomedografo.png
+#####################################################################
+
+#####################################################################

@@ -80,7 +80,7 @@ def main():
             #print(f"Solucao BL2 {instancia_corrente} = {sol_bl2_pcv} com custo = %.3f\n" %cust_bl2_pcv)
 
             dic_solucao = saving.construtivo(dic_instancia_corrente)
-            saidainstancias.grafo_savings(dic_instancia_corrente, dic_solucao)
+            #saidainstancias.grafo_savings(dic_instancia_corrente, dic_solucao)
             print(f"Solucao Savings {instancia_corrente} = {dic_solucao}\n")
             
             ##### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
