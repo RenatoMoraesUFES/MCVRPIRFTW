@@ -13,7 +13,6 @@ if __name__ == "__main__":
     from src.esinstancias import entradainstancias
     from src.esinstancias import saidainstancias
     from src.algoritmos import construtivopcv
-    from src.algoritmos import construtivo_sam
     from src.algoritmos import buscalocalpcv
     from src.algoritmos import saving
 
@@ -24,7 +23,6 @@ else:
     from src.esinstancias import entradainstancias
     from src.esinstancias import saidainstancias
     from src.algoritmos import construtivopcv
-    from src.algoritmos import construtivo_sam
     from src.algoritmos import buscalocalpcv
     from src.algoritmos import saving
 
@@ -52,7 +50,7 @@ def main():
     for instancia_corrente in lista_de_instancias: 
         #print(dic_instancia, end='\n\n\n')
         try:
-			### Dada a instancia_corrente, abro o arquivo .dat e carrego seus dados na memória (dicionario global dic_instancia)
+	    ### Dada a instancia_corrente, abro o arquivo .dat e carrego seus dados na memória (dicionario global dic_instancia)
             dic_instancia = entradainstancias.carrega_instancia(instancia_corrente + '.dat')
             dic_instancia_corrente = dic_instancia
             #print(dic_instancia, end='\n\n\n')
@@ -81,7 +79,11 @@ def main():
 
             dic_solucao = saving.construtivo(dic_instancia_corrente)
             #saidainstancias.grafo_savings(dic_instancia_corrente, dic_solucao)
-            print(f"Solucao Savings {instancia_corrente} = {dic_solucao}\n")
+            #print(f"Solucao Savings {instancia_corrente} = {dic_solucao}\n")
+            print(f"Solucao Savings {instancia_corrente}")
+            for item in dic_solucao:
+                print(item, dic_solucao[item])
+            print("\n")
             
             ##### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
             
