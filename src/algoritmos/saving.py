@@ -32,7 +32,7 @@ def construtivo(dic_instancia):
             if prop[i][j] == 1:
                 volume += volume_caixa[j]
         volumes_totais.append(volume)
-    print("Volumes totais por cliente = ", volumes_totais)
+    #print("Volumes totais por cliente = ", volumes_totais)
     ################################################################
 
     ################################################################
@@ -244,5 +244,5 @@ def construtivo(dic_instancia):
 
     #################################################################
                                              
-    #return paralelo(economia, rotas, volumes_totais, volume_maximo, volume)
-    return sequencial(economia, rotas, volumes_totais, volume_maximo, volume)
+    return paralelo(economia, rotas, volumes_totais, volume_maximo, volume)
+    #return sequencial(economia, rotas, volumes_totais, volume_maximo, volume)
