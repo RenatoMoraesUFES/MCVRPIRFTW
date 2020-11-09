@@ -14,6 +14,7 @@ if __name__ == "__main__":
     from src.esinstancias import saidainstancias
     from src.algoritmos import PCValgoritmo
     from src.algoritmos import PCVSimetrico
+    from src.algoritmos import construtivosequencial
 
 ### usado apenas como biblioteca 
 else:
@@ -23,6 +24,7 @@ else:
     from src.esinstancias import saidainstancias
     from src.algoritmos import PCValgoritmo
     from src.algoritmos import PCVSimetrico
+    from src.algoritmos import construtivosequencial
 
 ###############################################################################
 # Funcao principal para controle do fluxo do programa
@@ -63,12 +65,9 @@ def main():
             #if parametros_de_execucao['grafo_caixas_do_cliente'] == 1:
             #    saidainstancias.grafo_caixas_do_cliente(dic_instancia_corrente)
             
-            visitadas, custo = PCValgoritmo.menordistancia(dic_instancia_corrente, parametros_de_execucao)
-            solucaoviavel, custos = PCVSimetrico.buscalocalcaxeiro(dic_instancia_corrente, visitadas, custo)
-            print("Cidades visitadas: ", visitadas)
-            print("Custo total da viagem R$",custo,"\n")
-            print("A melhor viagem utilizando a busca local é: ", solucaoviavel)
-            print("O custo da melhor solução é de: R$", custos)
+            rota_final=construtivosequencial.savings(dic_instancia_corrente)
+            #visitadas, custo = PCValgoritmo.menordistancia(dic_instancia_corrente, parametros_de_execucao)
+            #solucaoviavel, custos = PCVSimetrico.buscalocalcaxeiro(dic_instancia_corrente, visitadas, custo)
             ##### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
             
             ##### saidasolucao.cria_grafos(dic_instancia_corrente,dic_solucao_corrente, configuracoes)
