@@ -1,5 +1,5 @@
 def savings(dic_instancia):
-      #Função que busca minimizar o custo total de transporte obedecendo as restrições de capacidade e de número de visitas a um cliente
+  #Função que busca minimizar o custo total de transporte obedecendo as restrições de capacidade e de número de visitas a um cliente
   D= dic_instancia['distancia'][:] #Busca a matriz distancia 
   capacidade= dic_instancia['num_max_compartimentos']    #Busca o valor da capacidade do veiculo
   #print('capacidade',capacidade) 
@@ -65,8 +65,8 @@ def savings(dic_instancia):
 
 def restricao_de_rotas(i, j,rota_corrente,rotas_unitarias):
   #print('rotas unitarias dentro:',rotas_unitarias)
-#for cidade in rotas_unitarias:
-    #if j in cidade or i in cidade:
+  #for cidade in rotas_unitarias:
+  #if j in cidade or i in cidade:
   
   if i in rota_corrente and j in rota_corrente: #Verifica se i e j já fazem parte da rota que está sendo montada
     return False
