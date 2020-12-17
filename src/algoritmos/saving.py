@@ -12,6 +12,11 @@ def construtivo(dic_instancia):
     distancia = dic_instancia["distancia"]
     #busco a matriz que tem qual caixa pertence a qual cliente
     prop = dic_instancia["caixas_do_cliente"]
+    #busco a matriz dos tempos para percorrer os arcos i,j
+    tempo = dic_instancia["tempo"]
+    jti = dic_instancia["janela_cliente_inicio"]
+    jtf = dic_instancia["janela_cliente_fim"]
+    ot = dic_instancia["tempo_operacao_caixa"]
     #busco também os volumes de cada caixa dos clientes
     volume_caixa = dic_instancia["volume_caixa"]
     #busco volume máximo dos compartimentos das bicicletas
@@ -50,6 +55,7 @@ def construtivo(dic_instancia):
                           -distancia[i][j])
                 economia.append((saving,[i,j]))
     economia.sort(reverse=True)
+    #print("Economias")
     #for linha in economia:
     #    print(linha)
     #print('\n')
@@ -58,9 +64,11 @@ def construtivo(dic_instancia):
 
     rotas = []
     volume = []
+    janela_tempo = []
     for i in range(1, len(distancia)-1-nosf):
         rotas.append([i])
         volume.append(volumes_totais[i-1])
+        janela_tempo.append(tempo[0][i])
         
     ################################################################
 
@@ -91,58 +99,92 @@ def construtivo(dic_instancia):
         
     ################################################################
 
-    def mesclar_rotas(i, j, rotas, volume):
-        '''
-        r, s = [], []
+    def verifica_tempo(i, j, rotas, tempo, janela_tempo, jti, jtf, ot):
         for rota in rotas:
-            if rota[0] == j:
-                r = rota
-            elif rota[-1] == i:
-                s = rota
-        '''
+            if i in rota:
+                pos_i = rotas.index(rota)
+            if j in rota:
+                pos_j = rotas.index(rota)
+        if (janela_tempo[pos_i] + janela_tempo[pos_j]) <= jtf[j]:
+            return True
+        return False
 
+    ################################################################
+
+    def define_dic_trecho(t, lista_trechos):
+
+        for rota_corrente in lista_trechos:
+            for trecho in rota_corrente:
+                if t == trecho:
+                    rota = lista_trechos.index(rota_corrente)
+                    posicao_na_rota = rota_corrente.index(t)
+                
+        origem_destino = t
+        
+        demanda = 0
+        if t[0] != 0:
+            demanda += volumes_totais[t[0]-1]
+        if t[1] != 0:
+            demanda += volumes_totais[t[1]-1]
+        
+        dic_trecho = {
+            'rota'              : [rota],
+            'posicao_na_rota'   : [posicao_na_rota],
+            'origem_destino'    : [origem_destino],
+            'demanda'           : [demanda],
+            'custo'             : [],
+            'janela_tempo'      : []
+            }
+
+        print(dic_trecho)
+
+        return dic_trecho
+    
+    ################################################################
+
+    def mesclar_rotas(i, j, rotas, volume, janela_tempo):
+       
         r, s = [], []
         for rota in rotas:
             if j in rota:
                 r = rota
             elif i in rota:
                 s = rota
+
         
         pos_r = rotas.index(r)
         pos_s = rotas.index(s)
         volume_r = volume[pos_r]
         volume_s = volume[pos_s]
+        tempo_r = janela_tempo[pos_r]
+        tempo_s = janela_tempo[pos_s]        
 
 
+        rotas.remove(r)
+        rotas.remove(s)
         if r[0] == j and s[0] == i:
-            rotas.remove(r)
-            rotas.remove(s)
             r.reverse()
             rotas.append(r+s)
         elif r[-1] == j and s[-1] == i:
-            rotas.remove(r)
-            rotas.remove(s)
             s.reverse()
             rotas.append(r+s)
         elif r[0] == j and s[-1] == i:
-            rotas.remove(r)
-            rotas.remove(s)
             rotas.append(s+r)
         elif r[-1] == j and s[0] == i:
-            rotas.remove(r)
-            rotas.remove(s)
             rotas.append(r+s)
-            
 
         
-        #rotas.remove(r)
-        #rotas.remove(s)
-        #rotas.append(r+s)
+        janela_tempo.append(tempo_r
+                            +tempo_s)
+        janela_tempo.remove(tempo_r)
+        janela_tempo.remove(tempo_s)
+
+        
         volume.append(volume_r
                      +volume_s)
         volume.remove(volume_r)
         volume.remove(volume_s)
-        
+
         
 
     ################################################################
@@ -150,19 +192,47 @@ def construtivo(dic_instancia):
     ################################################################
 
     def paralelo(economia, rotas, volumes_totais, volume_maximo, volume):
-    
+        #print("Inicio JT: ", jti)
+        #print("Fim JT: ", jtf)
+        #print("Volume máximo: ", volume_maximo)
         for i in range(len(economia)):
             cliente_i = economia[i][1][0]
             cliente_j = economia[i][1][1]
+            #print(f"Rotas : {rotas}")
+            #print(f"Tempos das rotas: {janela_tempo}")
+            #print(f"Demandas das rotas: {volume}\n")
+            #print(f"Clientes {cliente_i} e {cliente_j}")
             if verifica_rota(cliente_i, cliente_j, rotas):
+                #print("Rota verificada")
                 if verifica_capacidade(cliente_i, cliente_j, volume_maximo, volumes_totais, rotas, volume):
-                    mesclar_rotas(cliente_i, cliente_j, rotas, volume)
+                    #print("Capacidade verificada")
+                    if verifica_tempo(cliente_i, cliente_j, rotas, tempo, janela_tempo, jti, jtf, ot):
+                        #print("Janela de tempo verificada")
+                        mesclar_rotas(cliente_i, cliente_j, rotas, volume, janela_tempo)
+                        #print("Mesclar rotas\n")
+                    #else:
+                        #print("Janela de tempo excedida\n")
+                #else:
+                    #print("Capacidade excedida\n")
+            #else:
+                #print("Rota não verificada")
 
+
+        ###INSERE OS ARMAZENS NAS ROTAS (NO INICIO E FIM)###
         for rota in rotas:
             if 0 not in rota:
                 rota.insert(0, 0)
                 rota.append(0)
-                
+
+        ###TRANSFORMA A ROTA (LISTA) EM UMA LISTA DE TRECHO)###
+        lista_trechos = []
+        for rota in rotas:
+            aux = []
+            for i in range(len(rota)-1):
+                aux.append((rota[i], rota[i+1]))
+            lista_trechos.append(aux)
+        
+        ###CALCULA CUSTO DA ROTA###        
         custo = []
         for rota in rotas:
             custo_corrente = 0
@@ -175,10 +245,16 @@ def construtivo(dic_instancia):
             soma +=item
         custo.append(soma)
 
+        ###PERCORRE LISTA DE TRECHOS E CRIA O DICIONARIO###
+        for rota in lista_trechos:
+            for t in rota:
+                define_dic_trecho(t, lista_trechos)
+
         dic_solucao = {
-            'caminho'   : rotas,
-            'volume'    : volume,
-            'custo'     : custo
+            'caminho'       : rotas,
+            'volume'        : volume,
+            'custo'         : custo,
+            'janela_tempo'  : janela_tempo
             }
     
 
@@ -203,7 +279,8 @@ def construtivo(dic_instancia):
                 if rota_corrente == []:
                     if verifica_rota(cliente_i, cliente_j, rotas):
                         if verifica_capacidade(cliente_i, cliente_j, volume_maximo, volumes_totais, rotas, volume):
-                            mesclar_rotas(cliente_i, cliente_j, rotas, volume)
+                            #if verifica_tempo(cliente_i, cliente_j, rotas, tempo, janela_tempo, jti, jtf, ot):
+                            mesclar_rotas(cliente_i, cliente_j, rotas, volume, janela_tempo)
                             rota_corrente = rotas[-1]
                             #print(rota_corrente, rotas)
                             conseguiu_mesclar_rotas = True
@@ -211,7 +288,8 @@ def construtivo(dic_instancia):
                     if cliente_i in rota_corrente or cliente_j in rota_corrente:
                         if verifica_rota(cliente_i, cliente_j, rotas):
                             if verifica_capacidade(cliente_i, cliente_j, volume_maximo, volumes_totais, rotas, volume):
-                                mesclar_rotas(cliente_i, cliente_j, rotas, volume)
+                                #if verifica_tempo(cliente_i, cliente_j, rotas, tempo, janela_tempo, jti, jtf, ot):
+                                mesclar_rotas(cliente_i, cliente_j, rotas, volume, janela_tempo)
                                 #print(rota_corrente, rotas)
                                 rota_corrente = rotas[-1]
                                 conseguiu_mesclar_rotas = True
@@ -234,9 +312,10 @@ def construtivo(dic_instancia):
         custo.append(soma)
 
         dic_solucao = {
-            'caminho'   : rotas,
-            'volume'    : volume,
-            'custo'     : custo
+            'caminho'       : rotas,
+            'volume'        : volume,
+            'custo'         : custo,
+            'janela_tempo'  : janela_tempo
             }
 
 

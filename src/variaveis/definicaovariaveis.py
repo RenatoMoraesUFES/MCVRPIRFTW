@@ -22,11 +22,21 @@ dic_instancia = {
     }
 
 dic_solucao = {
-    'caminho'   : [],   # conjunto de nós i e j percorridos pela rota (lista)
-    'volume'    : [],   # volume total de cada cliente pertencente a rota (float)
-    'custo'     : []    # custo total da rota (float)
+    'caminho'       : [],   # conjunto de nós i e j percorridos pela rota (lista)
+    'volume'        : [],   # volume total de cada cliente pertencente a rota (float)
+    'custo'         : [],   # custo total da rota (float)
+    'janela_tempo'  : []    # 
     }
 
+dic_trecho = {
+    'rota'              : [],
+    'posicao_na_rota'   : [],
+    'origem_destino'    : [],
+    'demanda'           : [],
+    'custo'             : [],
+    'janela_tempo'      : []
+    }
+    
 ######## Armazenar a entrada como um dicionario (alternativo) ##########
 #dic_entrada = {
 #    'nos'       : {}, # quantidade de clientes (int) 

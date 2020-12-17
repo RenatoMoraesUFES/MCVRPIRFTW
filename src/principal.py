@@ -78,13 +78,13 @@ def main():
             sol_bl2_pcv, cust_bl2_pcv = buscalocalpcv.bl_2otp(dic_instancia_corrente, solucao_pcv, custo_pcv)
             #print(f"Solucao BL2 {instancia_corrente} = {sol_bl2_pcv} com custo = %.3f\n" %cust_bl2_pcv)
 
-            #inicio = time.time()
+            #inicio_marca_tempo = time.time()
             dic_solucao = saving.construtivo(dic_instancia_corrente)
-            #fim = time.time()
+            #fim_marca_tempo = time.time()
             #saidainstancias.grafo_savings(dic_instancia_corrente, dic_solucao)
             #print(f"Solucao Savings {instancia_corrente} = {dic_solucao}\n")
             print(f"Solucao Savings {instancia_corrente}")
-            print("Tempo de execução: ", fim-inicio)
+            #print("Tempo de execução: ", fim_marca_tempo-inicio_marca_tempo)
             for item in dic_solucao:
                 print(item, dic_solucao[item])
             print("\n")
