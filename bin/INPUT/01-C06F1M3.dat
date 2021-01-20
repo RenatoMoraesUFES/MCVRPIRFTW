@@ -12,10 +12,10 @@ nosf = 2;
 //numero de veiculos da frota(int) 
 m = 3;
 
-//número máximo de compartimentos
+//numero maximo de compartimentos
 ncp = 4;
 
-//parâmetro auxiliar
+//parametro auxiliar
 M = 99999;
 
 // distancia (ou custo) do arco i,j (int) (km) (rand 1 e 4)
@@ -52,7 +52,7 @@ wti = [	0	0	0	0	0	0	0	0	0   0];
 // fim da janela de tempo cliente (int)
 wtf = [	8	8	8	8	8	8	8	8	8   8];
 
-//tempo médio de operação de uma caixa (h) (0.02h = 1.2min)
+//tempo medio de operacao de uma caixa (h) (0.02h = 1.2min)
 ot = 0.02;
 
 // Numero de caixas
