@@ -44,7 +44,7 @@ t = [
 wti = [	0	0	0	0	0	0   0];
 
 // fim da janela de tempo cliente (int)
-wtf = [	10	10	10	10	10	10   10];
+wtf = [	15	15	15	15	15	15   15];
 
 //tempo medio de operacao de uma caixa (h) (0.02h = 1.2min)
 ot = 0.02;

@@ -100,43 +100,78 @@ def construtivo(dic_instancia):
     ################################################################
 
     def verifica_tempo(i, j, rotas, tempo, janela_tempo, jti, jtf, ot):
+        tempo_gasto_i = 0
+        tempo_gasto_j = 0
         for rota in rotas:
+            print(rota)
             if i in rota:
-                pos_i = rotas.index(rota)
+                tempo_gasto_i += tempo[0][rota[0]]
+                #tempo_gasto_i += tempo[rota[-1]][-1]
+                if len(rota) > 1:
+                    for cliente in range(len(rota)-1):
+                        tempo_gasto_i += tempo[cliente][cliente+1]
             if j in rota:
-                pos_j = rotas.index(rota)
-        if (janela_tempo[pos_i] + janela_tempo[pos_j]) <= jtf[j]:
+                #tempo_gasto_j += tempo[0][rota[0]]
+                tempo_gasto_j += tempo[rota[-1]][-1]
+                if len(rota) > 1:
+                    for cliente in range(len(rota)-1):
+                        tempo_gasto_j += tempo[cliente][cliente+1]
+        if (tempo_gasto_j + tempo_gasto_i) <= jtf[j]:
             return True
         return False
 
     ################################################################
 
-    def define_dic_trecho(t, lista_trechos):
+    def define_dic_trecho(lista_trechos):
 
+        lista_dic_trecho = []
+        cont = 0
+        
         for rota_corrente in lista_trechos:
-            for trecho in rota_corrente:
-                if t == trecho:
-                    rota = lista_trechos.index(rota_corrente)
-                    posicao_na_rota = rota_corrente.index(t)
+            for trecho_corrente in rota_corrente:
+                qual_rota = lista_trechos.index(rota_corrente)
+                posicao_na_rota = rota_corrente.index(trecho_corrente)
                 
-        origem_destino = t
-        
-        demanda = 0
-        if t[0] != 0:
-            demanda += volumes_totais[t[0]-1]
-        if t[1] != 0:
-            demanda += volumes_totais[t[1]-1]
-        
-        dic_trecho = {
-            'rota'              : [rota],
-            'posicao_na_rota'   : [posicao_na_rota],
-            'origem_destino'    : [origem_destino],
-            'demanda'           : [demanda],
-            'custo'             : [],
-            'janela_tempo'      : []
-            }
+                t = trecho_corrente
+                
+                origem_destino = t
 
-        print(dic_trecho)
+               
+                demanda = 0
+                for i in range(posicao_na_rota, len(lista_trechos[qual_rota])):
+                    if lista_trechos[qual_rota][i][1] != 0:
+                        demanda += volumes_totais[lista_trechos[qual_rota][i][1]-1]
+
+                
+                if t[1] == 0:
+                    custo = distancia[t[0]][-1]
+                else:
+                    custo = distancia[t[0]][t[1]]
+
+
+                if t[0] == 0:
+                    janela_tempo = (0, tempo[0][t[1]])
+                elif t[1] == 0:
+                    aux = lista_dic_trecho[cont-1]['janela_tempo'][0][1]
+                    janela_tempo = (aux, aux + tempo[t[0]][-1])
+                else:
+                    aux = lista_dic_trecho[cont-1]['janela_tempo'][0][1]
+                    janela_tempo = (aux, aux + tempo[t[0]][t[1]])
+                       
+                
+                dic_trecho = {
+                    'rota'              : [qual_rota],
+                    'posicao_na_rota'   : [posicao_na_rota],
+                    'origem_destino'    : [origem_destino],
+                    'demanda'           : [demanda],
+                    'custo'             : [custo],
+                    'janela_tempo'      : [janela_tempo]
+                    }
+
+                lista_dic_trecho.append(dic_trecho)
+                cont+=1
+
+                print(dic_trecho)
 
         return dic_trecho
     
@@ -224,7 +259,7 @@ def construtivo(dic_instancia):
                 rota.insert(0, 0)
                 rota.append(0)
 
-        ###TRANSFORMA A ROTA (LISTA) EM UMA LISTA DE TRECHO)###
+        ###TRANSFORMA A ROTA (LISTA) EM UMA LISTA DE TRECHO###
         lista_trechos = []
         for rota in rotas:
             aux = []
@@ -246,10 +281,9 @@ def construtivo(dic_instancia):
         custo.append(soma)
 
         ###PERCORRE LISTA DE TRECHOS E CRIA O DICIONARIO###
-        for rota in lista_trechos:
-            for t in rota:
-                define_dic_trecho(t, lista_trechos)
-
+        define_dic_trecho(lista_trechos)
+        
+                                         
         dic_solucao = {
             'caminho'       : rotas,
             'volume'        : volume,
