@@ -5,7 +5,7 @@ def savings(dic_instancia):
   #print('capacidade',capacidade) 
   prop=dic_instancia['caixas_do_cliente']
   #print('caixas_cliente',prop)
-  volume=dic_instancia['volume_cliente']      #Busca os valores das demandas
+  volume=dic_instancia['volume_caixa']      #Busca os valores das demandas
   #print('distancia',D)
   #print('Demanda',volume)
   volume_limite=100
@@ -16,39 +16,42 @@ def savings(dic_instancia):
   rotas_unitarias=[]
   volume_por_rota_unitaria=[]
   volume_final=[]
+  unitarias=[]
   
   #print(len(D))
-  for i in range(0, len(D)):    #Esse bloco calcula o valor economizado com a junção de duas entregas
+  for i in range(0,len(D)-1):    #Esse bloco calcula o valor economizado com a junção de duas entregas
     linha=[]
-    #print('distancia',D[i])
-    for j in range(0,len(D)):
+    for j in range(0,len(D)-1):
       if j!=i and i>0 and j>0:
         linha.append(D[i][0]+D[0][j]-D[i][j])
       else:
         linha.append(9999)    # matriz savings deve ser a subtração da primeira com a segunda
     economias.append(linha)
-    #print('matriz economias',economias)
-
+  
+  #print('matriz economias',economias)
 
   #Cria o vetor de volumes calculados por cliente
   for i in range(0,len(prop)-1-nosf):
+    
     volume_cliente=0
     for j in range(0, len(prop[i])):
       if prop[i][j]==1:
         volume_cliente+=volume[j]
     volume_por_rota_unitaria.append(volume_cliente)
-  #print('volume por rota unitaria',volume_por_rota_unitaria)
+  print('volume por rota unitaria',volume_por_rota_unitaria)
+  
   
   for i in range(0,1):            #Esse bloco monta as rotas unitárias com o custo de cada uma e também com o custo da soma de todas as viagens
-    for j in range(1,len(D)):
-      unitarias=[sum(volume[j]),0,j,0]
+    for j in range(1,len(D)-2-nosf):
+      print('lend',len(D))
+      unitarias=[j]
       rotas_unitarias.append(unitarias)
-  print('Rotas unitarias:', rotas_unitarias)
+  #print('Rotas unitarias:', rotas_unitarias)
 
 
 
-  for i in range(1,len(D)):     #Percorrer a matriz economias e colocar as cidades em ordem decrescente de ganhos
-    for j in range(i+1,len(D)):
+  for i in range(1,len(D)-2-nosf):     #Percorrer a matriz economias e colocar as cidades em ordem decrescente de ganhos
+    for j in range(i+1,len(D)-2-nosf):
       custo=economias[i][j]
       rotas.append([custo,(i,j)])
   rotas=sorted(rotas,reverse=True)[:] #colocou cada linha em ordem decrescente de valor
