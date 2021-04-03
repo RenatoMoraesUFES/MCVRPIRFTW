@@ -68,7 +68,8 @@ def construtivo(dic_instancia):
     for i in range(1, len(distancia)-1-nosf):
         rotas.append([i])
         volume.append(volumes_totais[i-1])
-        janela_tempo.append(tempo[0][i])
+        janela_tempo.append((jti[i], jtf[i]))
+    #print("rotas ", rotas, "\nvolume ", volume, "\njanela_tempo" , janela_tempo)
         
     ################################################################
 
@@ -103,7 +104,7 @@ def construtivo(dic_instancia):
         tempo_gasto_i = 0
         tempo_gasto_j = 0
         for rota in rotas:
-            print(rota)
+            #print(rota)
             if i in rota:
                 tempo_gasto_i += tempo[0][rota[0]]
                 #tempo_gasto_i += tempo[rota[-1]][-1]
@@ -171,7 +172,7 @@ def construtivo(dic_instancia):
                 lista_dic_trecho.append(dic_trecho)
                 cont+=1
 
-                print(dic_trecho)
+                #print(dic_trecho)
 
         return dic_trecho
     
@@ -356,6 +357,87 @@ def construtivo(dic_instancia):
         return dic_solucao
 
     #################################################################
+
+    def calcula_custo_inserir(u, arco, rota_corrente):
+        a1 = 0.5
+        a2 = 0.5
+        #print("u: ", u, "\narco: ", arco, "\nrota corrente: ", rota_corrente)
+
+        
+        c11 = (distancia[arco[0]][u]    
+               + distancia[u][arco[1]]
+               - distancia[arco[0]][arco[1]])
+        #tempo de inicio do servico em j+1 do arco (j,j+1)
+        bj = 0
+        # tempo de inicio do servico em j+1 com a inserção de u
+        bju = 0
+
+        c12 = bju - bj
+
+        c1 = a1*c11 + a2*c12
+
+        c2 = distancia[0][u] - c1
+
+        return c2
+
+    def inserir_u_em_rota(u, arco, rota_corrente):
+        #print("u: ", u, "\narco: ", arco, "\nrota corrente: ", rota_corrente)
+        posicao_j = rota_corrente.index(arco[0])
+        #print("posicao j: ", posicao_j)
+        rota_corrente.insert(posicao_j + 1, u)
+        #print(rota_corrente)
+        pass
+    
+    #################################################################
+
+    def PFIH(rotas, volumes_totais, volume_maximo, volume, janela_tempo):
+        """ Funcao PFIH de Solomon que resolve o VRP com restricao
+            de janela de tempo. Essa funcao substitui o Savings.
+            Ainda está em fase de construção.
+        """
+        R = []
+        #NR = rotas
+        while rotas != []:
+            print("\n------Marcação de novo laço------\n")
+            CI = []
+            print("NR: ", rotas)
+            for i in rotas:
+                if i not in R:
+                    custo_inicializacao = -(distancia[0][i[0]])
+                    CI.append((custo_inicializacao, i[0]))
+            CI.sort()
+            rota_corrente = [0, CI[0][1], 0]
+            rotas.remove([CI[0][1]])
+            print("CI: ", CI, "\nRota Corrente :", rota_corrente)
+            
+            insercao_viavel = True
+            while insercao_viavel:
+                insercao_viavel = False
+                H = []
+                for i in rotas:
+                    for j in range(len(rota_corrente)-1):
+                        custo_inserir = calcula_custo_inserir(i[0], (rota_corrente[j], rota_corrente[j+1]), rota_corrente)
+                        H.append([custo_inserir, i, (rota_corrente[j], rota_corrente[j+1])])
+                H.sort(reverse=True)
+                print("H( ck, vi, (j,j+1) ): ", H)
+
+                for h in H:
+                    #if verifica_capacidade(i, j, volume_maximo, volumes_totais, rotas, volume):
+                    if True:
+                        if True:
+                        #if verifica_tempo(i, j, rotas, tempo, janela_tempo, jti, jtf, ot):
+                            # h[1] = elemento i - h[2] = arco (j,j+1)
+                            inserir_u_em_rota(h[1][0], h[2], rota_corrente)
+                            rotas.remove(h[1])
+                            insercao_viavel = True
+                            break
+                print("\nNR: ", rotas, "\nRota Corrente :", rota_corrente)
+            R.append(rota_corrente)
+
+        return R
+    
+    #################################################################
                                              
-    return paralelo(economia, rotas, volumes_totais, volume_maximo, volume)
+    #return paralelo(economia, rotas, volumes_totais, volume_maximo, volume)
     #return sequencial(economia, rotas, volumes_totais, volume_maximo, volume)
+    return PFIH(rotas, volumes_totais, volume_maximo, volume, janela_tempo)

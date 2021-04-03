@@ -86,7 +86,8 @@ def main():
             print(f"Solucao Savings {instancia_corrente}")
             #print("Tempo de execução: ", fim_marca_tempo-inicio_marca_tempo)
             for item in dic_solucao:
-                print(item, dic_solucao[item])
+                #print(item, dic_solucao[item])
+                print("R: ", item)
             print("\n")
             
             ##### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
