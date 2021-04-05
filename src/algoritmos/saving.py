@@ -13,7 +13,7 @@ def construtivo(dic_instancia):
     #busco a matriz que tem qual caixa pertence a qual cliente
     prop = dic_instancia["caixas_do_cliente"]
     #busco a matriz dos tempos para percorrer os arcos i,j
-    tempo = dic_instancia["tempo"]
+    matriz_tempo = dic_instancia["tempo"]
     jti = dic_instancia["janela_cliente_inicio"]
     jtf = dic_instancia["janela_cliente_fim"]
     ot = dic_instancia["tempo_operacao_caixa"]
@@ -100,23 +100,23 @@ def construtivo(dic_instancia):
         
     ################################################################
 
-    def verifica_tempo(i, j, rotas, tempo, janela_tempo, jti, jtf, ot):
+    def verifica_tempo(i, j, rotas, matriz_tempo, janela_tempo, jti, jtf, ot):
         tempo_gasto_i = 0
         tempo_gasto_j = 0
         for rota in rotas:
             #print(rota)
             if i in rota:
-                tempo_gasto_i += tempo[0][rota[0]]
-                #tempo_gasto_i += tempo[rota[-1]][-1]
+                tempo_gasto_i += matriz_tempo[0][rota[0]]
+                #tempo_gasto_i += matriz_tempo[rota[-1]][-1]
                 if len(rota) > 1:
                     for cliente in range(len(rota)-1):
-                        tempo_gasto_i += tempo[cliente][cliente+1]
+                        tempo_gasto_i += matriz_tempo[cliente][cliente+1]
             if j in rota:
-                #tempo_gasto_j += tempo[0][rota[0]]
-                tempo_gasto_j += tempo[rota[-1]][-1]
+                #tempo_gasto_j += matriz_tempo[0][rota[0]]
+                tempo_gasto_j += matriz_tempo[rota[-1]][-1]
                 if len(rota) > 1:
                     for cliente in range(len(rota)-1):
-                        tempo_gasto_j += tempo[cliente][cliente+1]
+                        tempo_gasto_j += matriz_tempo[cliente][cliente+1]
         if (tempo_gasto_j + tempo_gasto_i) <= jtf[j]:
             return True
         return False
@@ -151,13 +151,13 @@ def construtivo(dic_instancia):
 
 
                 if t[0] == 0:
-                    janela_tempo = (0, tempo[0][t[1]])
+                    janela_tempo = (0, matriz_tempo[0][t[1]])
                 elif t[1] == 0:
                     aux = lista_dic_trecho[cont-1]['janela_tempo'][0][1]
-                    janela_tempo = (aux, aux + tempo[t[0]][-1])
+                    janela_tempo = (aux, aux + matriz_tempo[t[0]][-1])
                 else:
                     aux = lista_dic_trecho[cont-1]['janela_tempo'][0][1]
-                    janela_tempo = (aux, aux + tempo[t[0]][t[1]])
+                    janela_tempo = (aux, aux + matriz_tempo[t[0]][t[1]])
                        
                 
                 dic_trecho = {
@@ -314,7 +314,7 @@ def construtivo(dic_instancia):
                 if rota_corrente == []:
                     if verifica_rota(cliente_i, cliente_j, rotas):
                         if verifica_capacidade(cliente_i, cliente_j, volume_maximo, volumes_totais, rotas, volume):
-                            #if verifica_tempo(cliente_i, cliente_j, rotas, tempo, janela_tempo, jti, jtf, ot):
+                            #if verifica_tempo(cliente_i, cliente_j, rotas, matriz_tempo, janela_tempo, jti, jtf, ot):
                             mesclar_rotas(cliente_i, cliente_j, rotas, volume, janela_tempo)
                             rota_corrente = rotas[-1]
                             #print(rota_corrente, rotas)
@@ -323,7 +323,7 @@ def construtivo(dic_instancia):
                     if cliente_i in rota_corrente or cliente_j in rota_corrente:
                         if verifica_rota(cliente_i, cliente_j, rotas):
                             if verifica_capacidade(cliente_i, cliente_j, volume_maximo, volumes_totais, rotas, volume):
-                                #if verifica_tempo(cliente_i, cliente_j, rotas, tempo, janela_tempo, jti, jtf, ot):
+                                #if verifica_tempo(cliente_i, cliente_j, rotas, matriz_tempo, janela_tempo, jti, jtf, ot):
                                 mesclar_rotas(cliente_i, cliente_j, rotas, volume, janela_tempo)
                                 #print(rota_corrente, rotas)
                                 rota_corrente = rotas[-1]
@@ -367,10 +367,49 @@ def construtivo(dic_instancia):
         c11 = (distancia[arco[0]][u]    
                + distancia[u][arco[1]]
                - distancia[arco[0]][arco[1]])
-        #tempo de inicio do servico em j+1 do arco (j,j+1)
+        
+        #tempo de inicio do servico em j+1 do arco (j,j+1), ou seja, em arco[1]
+        if arco[1] == 0:
+            posicao_j = len(rota_corrente)-1
+        else:
+            posicao_j = rota_corrente.index(arco[1])
         bj = 0
+        for i in range(posicao_j):
+            if rota_corrente[i] == 0:                
+                if rota_corrente[i+1] == 0:
+                    bj += matriz_tempo[rota_corrente[i]][-1]
+                else:
+                    bj += matriz_tempo[rota_corrente[i]][rota_corrente[i+1]]
+            else:
+                if rota_corrente[i+1] == 0:
+                    bj += matriz_tempo[rota_corrente[i]][-1] + ot
+                else:
+                    bj += matriz_tempo[rota_corrente[i]][rota_corrente[i+1]] + ot
+            if bj < jti[rota_corrente[i+1]]:
+                bj = jti[rota_corrente[i+1]]
+        
         # tempo de inicio do servico em j+1 com a inserção de u
+        posicao_inserir = rota_corrente.index(arco[0])
+        rota_corrente.insert(posicao_inserir + 1, u)
+        if arco[1] == 0:
+            posicao_j = len(rota_corrente)-1
+        else:
+            posicao_j = rota_corrente.index(arco[1])
         bju = 0
+        for i in range(posicao_j):
+            if rota_corrente[i] == 0:                
+                if rota_corrente[i+1] == 0:
+                    bju += matriz_tempo[rota_corrente[i]][-1]
+                else:
+                    bju += matriz_tempo[rota_corrente[i]][rota_corrente[i+1]]
+            else:
+                if rota_corrente[i+1] == 0:
+                    bju += matriz_tempo[rota_corrente[i]][-1] + ot
+                else:
+                    bju += matriz_tempo[rota_corrente[i]][rota_corrente[i+1]] + ot
+            if bju < jti[rota_corrente[i+1]]:
+                bju = jti[rota_corrente[i+1]]
+        rota_corrente.remove(u)        
 
         c12 = bju - bj
 
@@ -387,6 +426,51 @@ def construtivo(dic_instancia):
         rota_corrente.insert(posicao_j + 1, u)
         #print(rota_corrente)
         pass
+
+    def testa_viabilidade(u, arco, rota_corrente, volume, volume_maximo, jti, jtf, matriz_tempo):
+        print("\nTestando viabilidade...\n")
+        print("u: ", u, "\narco: ", arco, "\nrota corrente: ", rota_corrente)
+        #print("volume: ", volume, "\nvolume_max: ", volume_maximo)
+        #print("(jti, jtf): ", (jti, jtf), "\nmatriz tempo: ", matriz_tempo)
+
+        ###### TESTE DE CAPACIDADE ######
+        demanda = 0
+        # FOR percorre a rota_corrente excluindo o armazem no inicio e no fim
+        for cliente in range(1,len(rota_corrente)-1):
+            demanda += volume[cliente]
+        demanda += volume[u]
+        #print("Demanda: ", demanda)
+        if demanda > volume_maximo:
+            print("Limite de demanda ultrapassado.")
+            return False
+
+        ###### TESTE DE TEMPO ######
+        posicao_j = rota_corrente.index(arco[0])
+        rota_corrente.insert(posicao_j + 1, u)
+        print("Rota corrente com insercao u no arco: ", rota_corrente)
+        bju = 0
+        for i in range(len(rota_corrente)-1):
+            if rota_corrente[i] == 0:                
+                if rota_corrente[i+1] == 0:
+                    bju += matriz_tempo[rota_corrente[i]][-1]
+                else:
+                    bju += matriz_tempo[rota_corrente[i]][rota_corrente[i+1]]
+            else:
+                if rota_corrente[i+1] == 0:
+                    bju += matriz_tempo[rota_corrente[i]][-1] + ot
+                else:
+                    bju += matriz_tempo[rota_corrente[i]][rota_corrente[i+1]] + ot
+            if bju < jti[rota_corrente[i+1]]:
+                bju = jti[rota_corrente[i+1]]
+            print("cliente: ", rota_corrente[i+1] ,"\nbju: ", bju, "\njti[cliente]: ", jti[rota_corrente[i+1]], "\njtf[cliente]: ", jtf[rota_corrente[i+1]])
+            if bju > jtf[rota_corrente[i+1]]:
+                print("Limite de Janela de Tempo ultrapassado.")
+                rota_corrente.remove(u)
+                return False
+
+        rota_corrente.remove(u)
+
+        return True
     
     #################################################################
 
@@ -422,15 +506,12 @@ def construtivo(dic_instancia):
                 print("H( ck, vi, (j,j+1) ): ", H)
 
                 for h in H:
-                    #if verifica_capacidade(i, j, volume_maximo, volumes_totais, rotas, volume):
-                    if True:
-                        if True:
-                        #if verifica_tempo(i, j, rotas, tempo, janela_tempo, jti, jtf, ot):
-                            # h[1] = elemento i - h[2] = arco (j,j+1)
-                            inserir_u_em_rota(h[1][0], h[2], rota_corrente)
-                            rotas.remove(h[1])
-                            insercao_viavel = True
-                            break
+                    if testa_viabilidade(h[1][0], h[2], rota_corrente, volume, volume_maximo, jti, jtf, matriz_tempo):
+                        # h[1] = elemento i - h[2] = arco (j,j+1)
+                        inserir_u_em_rota(h[1][0], h[2], rota_corrente)
+                        rotas.remove(h[1])
+                        insercao_viavel = True
+                        break
                 print("\nNR: ", rotas, "\nRota Corrente :", rota_corrente)
             R.append(rota_corrente)
 
