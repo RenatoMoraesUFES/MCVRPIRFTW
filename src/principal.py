@@ -16,6 +16,7 @@ if __name__ == "__main__":
     from src.algoritmos import PCVSimetrico
     from src.algoritmos import construtivosequencial
     from src.algoritmos import construtivoparalelo
+    from src.algoritmos import PFIH
 
 ### usado apenas como biblioteca 
 else:
@@ -27,6 +28,7 @@ else:
     from src.algoritmos import PCVSimetrico
     from src.algoritmos import construtivosequencial
     from src.algoritmos import construtivoparalelo
+    from src.algoritmos import PFIH
 
 ###############################################################################
 # Funcao principal para controle do fluxo do programa
@@ -67,7 +69,8 @@ def main():
             #if parametros_de_execucao['grafo_caixas_do_cliente'] == 1:
             #    saidainstancias.grafo_caixas_do_cliente(dic_instancia_corrente)
             
-            rota_final=construtivoparalelo.savings(dic_instancia_corrente)
+            rota_final=PFIH.vizinho_mais_proximo(dic_instancia_corrente)
+            #rota_final=construtivoparalelo.savings(dic_instancia_corrente)
             #rota_final=construtivosequencial.savings(dic_instancia_corrente)
             #visitadas, custo = PCValgoritmo.menordistancia(dic_instancia_corrente, parametros_de_execucao)
             #solucaoviavel, custos = PCVSimetrico.buscalocalcaxeiro(dic_instancia_corrente, visitadas, custo)
