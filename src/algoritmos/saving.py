@@ -359,7 +359,9 @@ def construtivo(dic_instancia):
     #################################################################
 
     def calcula_custo_inserir(u, arco, rota_corrente):
+        #Parametro a1 dá prioridade para os custos de distancia
         a1 = 0.5
+        #Parametro a2 dá prioridade para os custos de tempo
         a2 = 0.5
         #print("u: ", u, "\narco: ", arco, "\nrota corrente: ", rota_corrente)
 
@@ -429,16 +431,18 @@ def construtivo(dic_instancia):
 
     def testa_viabilidade(u, arco, rota_corrente, volume, volume_maximo, jti, jtf, matriz_tempo):
         print("\nTestando viabilidade...\n")
-        print("u: ", u, "\narco: ", arco, "\nrota corrente: ", rota_corrente)
+        print("Entradas: ", "\nu: ", u, "\narco: ", arco, "\nrota corrente: ", rota_corrente)
         #print("volume: ", volume, "\nvolume_max: ", volume_maximo)
         #print("(jti, jtf): ", (jti, jtf), "\nmatriz tempo: ", matriz_tempo)
 
         ###### TESTE DE CAPACIDADE ######
         demanda = 0
         # FOR percorre a rota_corrente excluindo o armazem no inicio e no fim
-        for cliente in range(1,len(rota_corrente)-1):
-            demanda += volume[cliente]
-        demanda += volume[u]
+        for cliente in rota_corrente[1:-1]:
+            demanda += volume[cliente-1]
+        demanda += volume[u-1]
+        print("Nova demanda com a inserção: ", demanda)
+        print("Volume máximo: ", volume_maximo)
         #print("Demanda: ", demanda)
         if demanda > volume_maximo:
             print("Limite de demanda ultrapassado.")
@@ -462,7 +466,9 @@ def construtivo(dic_instancia):
                     bju += matriz_tempo[rota_corrente[i]][rota_corrente[i+1]] + ot
             if bju < jti[rota_corrente[i+1]]:
                 bju = jti[rota_corrente[i+1]]
-            print("cliente: ", rota_corrente[i+1] ,"\nbju: ", bju, "\njti[cliente]: ", jti[rota_corrente[i+1]], "\njtf[cliente]: ", jtf[rota_corrente[i+1]])
+            print("cliente: ", rota_corrente[i+1])
+            print("bju: ", bju)
+            print(f"jt[cliente]: ({jti[rota_corrente[i+1]]},{jtf[rota_corrente[i+1]]})")
             if bju > jtf[rota_corrente[i+1]]:
                 print("Limite de Janela de Tempo ultrapassado.")
                 rota_corrente.remove(u)
@@ -470,6 +476,7 @@ def construtivo(dic_instancia):
 
         rota_corrente.remove(u)
 
+        print("Inserção Viável.")
         return True
     
     #################################################################
@@ -479,6 +486,7 @@ def construtivo(dic_instancia):
             de janela de tempo. Essa funcao substitui o Savings.
             Ainda está em fase de construção.
         """
+        print(f"\nInicio da instancia {dic_instancia['nome_instancia']}\n")
         R = []
         #NR = rotas
         while rotas != []:
