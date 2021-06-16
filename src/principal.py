@@ -69,8 +69,9 @@ def main():
             #if parametros_de_execucao['grafo_caixas_do_cliente'] == 1:
             #    saidainstancias.grafo_caixas_do_cliente(dic_instancia_corrente)
             
-            rota_final=PFIH.vizinho_mais_proximo(dic_instancia_corrente)
-            #rota_final=construtivoparalelo.savings(dic_instancia_corrente)
+            dic_solucao=construtivoparalelo.savings(dic_instancia_corrente)
+            print(f"Solucao Savings {instancia_corrente} = {dic_solucao}\n")
+            #rota_final=PFIH.vizinho_mais_proximo(dic_instancia_corrente)
             #rota_final=construtivosequencial.savings(dic_instancia_corrente)
             #visitadas, custo = PCValgoritmo.menordistancia(dic_instancia_corrente, parametros_de_execucao)
             #solucaoviavel, custos = PCVSimetrico.buscalocalcaxeiro(dic_instancia_corrente, visitadas, custo)
