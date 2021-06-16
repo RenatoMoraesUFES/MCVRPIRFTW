@@ -1,13 +1,13 @@
 def savings(dic_instancia):
-  #Função que busca minimizar o custo total de transporte obedecendo as restrições de capacidade e de número de visitas a um cliente
+      #Função que busca minimizar o custo total de transporte obedecendo as restrições de capacidade e de número de visitas a um cliente
   D= dic_instancia['distancia'][:] #Busca a matriz distancia 
   #capacidade= dic_instancia['num_max_compartimentos']    #Busca o valor da capacidade do veiculo
   #print('capacidade',capacidade) 
   prop=dic_instancia['caixas_do_cliente']
   #print('caixas_cliente',prop)
   volume=dic_instancia['volume_caixa']      #Busca os valores das demandas
-  #print('distancia',D)
-  #print('Demanda',volume)
+  print('distancia',D)
+  print('Demanda',volume)
   volume_limite=100
   nosf=dic_instancia['facilidades']
   economias=[]
@@ -17,6 +17,7 @@ def savings(dic_instancia):
   volume_por_rota_unitaria=[]
   volume_final=[]
   unitarias=[]
+  custo_final=[]
   
   #print(len(D))
   for i in range(0,len(D)-1):    #Esse bloco calcula o valor economizado com a junção de duas entregas
@@ -38,12 +39,12 @@ def savings(dic_instancia):
       if prop[i][j]==1:
         volume_cliente+=volume[j]
     volume_por_rota_unitaria.append(volume_cliente)
-  print('volume por rota unitaria',volume_por_rota_unitaria)
+  #print('volume por rota unitaria',volume_por_rota_unitaria)
   
   
   for i in range(0,1):            #Esse bloco monta as rotas unitárias com o custo de cada uma e também com o custo da soma de todas as viagens
     for j in range(1,len(D)-2-nosf):
-      print('lend',len(D))
+      #print('lend',len(D))
       unitarias=[j]
       rotas_unitarias.append(unitarias)
   #print('Rotas unitarias:', rotas_unitarias)
@@ -55,7 +56,7 @@ def savings(dic_instancia):
       custo=economias[i][j]
       rotas.append([custo,(i,j)])
   rotas=sorted(rotas,reverse=True)[:] #colocou cada linha em ordem decrescente de valor
-  print('Economias:',rotas)
+  #print('Economias:',rotas)
 
   for cidade in rotas:   #percorre cada rota em ordem decrescente de economias
     
@@ -64,37 +65,55 @@ def savings(dic_instancia):
     j=cidade[1][1]   #seleciona a cidade de chegada da rota mais economica
     
     
-    verificacao_demanda= restricao_de_demanda(i,j,volume_limite,volume_por_rota_unitaria,rotas_unitarias)
-    #print('RESTRIÇÃO DE DEMANDA',verificacao_demanda)
-    if verificacao_demanda==True:
-      verificacao_rota=restricao_de_rotas(i,j,rotas_unitarias)
-      #print('restrição de rota',verificacao_rota)
-      if verificacao_rota==True:
+    rota_final=rotas_unitarias
+    i=cidade[1][0]   #seleciona a cidade de partida da rota mais economica
+    j=cidade[1][1]   #seleciona a cidade de chegada da rota mais economica
+
+    verificacao_rota=restricao_de_rotas(i,j,rotas_unitarias)
+    if verificacao_rota==True:
+      #verificacao_janela=janela_tempo(wti,wtf,oti,rotas_unitarias,i,j,t)
+      #if verificacao_janela==True:
+      verificacao_demanda=restricao_de_demanda(i,j,volume_limite,volume_por_rota_unitaria,rotas_unitarias)
+      if verificacao_demanda==True:
         rotas_unitarias=unir_rotas(i,j,rotas_unitarias)
 
   for rota in rotas_unitarias:
     demanda_rota=0
+    custo_rota=0
     for cidade in rota:
       demanda_rota+=volume_por_rota_unitaria[cidade-1]
+      custo_rota+=D[cidade][cidade+1]
+      #print('custo rota',custo_rota)
     volume_final.append(demanda_rota)
+    custo_final.append(custo_rota)
 
   rotas_formadas=rotas_unitarias
   
-  
-  print('Rotas unitárias:',rotas_unitarias)
-  print('Rotas formadas:',rotas_formadas)
+  custo_final = []
+  for rota in rotas_formadas:
+    custo_corrente = 0
+    rota.insert(0,0)
+    rota.append(0)
+    for i in range(len(rota)-2):
+      custo_corrente += D[rota[i]][rota[i+1]]
+    custo_corrente += D[rota[-2]][-1]
+    custo_final.append(custo_corrente)
+  #a diferença de valor encontrada na rota que inicia com a cidade 6 é devido a ordem de visita da rota
+
+  #print('Rotas formadas:',rotas_formadas)
   #print('custos finais',custo_final)
-  print('Volumes finais',volume_final)
+  #print('Volumes finais',volume_final)
   
-  return rotas_unitarias
+  
+  return rotas_formadas, volume_final, custo_final
 
 
   
   
 def unir_rotas(i, j,rotas_unitarias):
-  print('i',i)
-  print('j',j)
-  print('!!!!rotas unitárias:',rotas_unitarias)
+  #print('i',i)
+  #print('j',j)
+  #print('!!!!rotas unitárias:',rotas_unitarias)
 
 
   for rota in rotas_unitarias: 
