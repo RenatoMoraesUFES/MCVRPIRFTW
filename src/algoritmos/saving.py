@@ -20,7 +20,7 @@ def construtivo(dic_instancia):
     #busco também os volumes de cada caixa dos clientes
     volume_caixa = dic_instancia["volume_caixa"]
     #busco volume máximo dos compartimentos das bicicletas
-    volume_maximo = 100
+    volume_maximo = 50
     #busco o numero de facilidades na instancia
     nosf = dic_instancia["facilidades"]
     ################################################################
@@ -242,9 +242,9 @@ def construtivo(dic_instancia):
                 #print("Rota verificada")
                 if verifica_capacidade(cliente_i, cliente_j, volume_maximo, volumes_totais, rotas, volume):
                     #print("Capacidade verificada")
-                    if verifica_tempo(cliente_i, cliente_j, rotas, tempo, janela_tempo, jti, jtf, ot):
+                    #if verifica_tempo(cliente_i, cliente_j, rotas, tempo, janela_tempo, jti, jtf, ot):
                         #print("Janela de tempo verificada")
-                        mesclar_rotas(cliente_i, cliente_j, rotas, volume, janela_tempo)
+                    mesclar_rotas(cliente_i, cliente_j, rotas, volume, janela_tempo)
                         #print("Mesclar rotas\n")
                     #else:
                         #print("Janela de tempo excedida\n")
@@ -276,20 +276,21 @@ def construtivo(dic_instancia):
                 custo_corrente += distancia[rota[i]][rota[i+1]]
             custo_corrente += distancia[rota[-2]][-1]
             custo.append(custo_corrente)
+
         soma = 0
         for item in custo:
             soma +=item
-        custo.append(soma)
+        custo_total = soma
 
         ###PERCORRE LISTA DE TRECHOS E CRIA O DICIONARIO###
         define_dic_trecho(lista_trechos)
         
                                          
         dic_solucao = {
-            'caminho'       : rotas,
-            'volume'        : volume,
-            'custo'         : custo,
-            'janela_tempo'  : janela_tempo
+            'Caminho'       : rotas,
+            'Volume'        : volume,
+            'Custo'         : custo,
+            'Custo Total'   : custo_total
             }
     
 
@@ -430,8 +431,8 @@ def construtivo(dic_instancia):
         pass
 
     def testa_viabilidade(u, arco, rota_corrente, volume, volume_maximo, jti, jtf, matriz_tempo):
-        print("\nTestando viabilidade...\n")
-        print("Entradas: ", "\nu: ", u, "\narco: ", arco, "\nrota corrente: ", rota_corrente)
+        #print("\nTestando viabilidade...\n")
+        #print("Entradas: ", "\nu: ", u, "\narco: ", arco, "\nrota corrente: ", rota_corrente)
         #print("volume: ", volume, "\nvolume_max: ", volume_maximo)
         #print("(jti, jtf): ", (jti, jtf), "\nmatriz tempo: ", matriz_tempo)
 
@@ -441,17 +442,17 @@ def construtivo(dic_instancia):
         for cliente in rota_corrente[1:-1]:
             demanda += volume[cliente-1]
         demanda += volume[u-1]
-        print("Nova demanda com a inserção: ", demanda)
-        print("Volume máximo: ", volume_maximo)
+        #print("Nova demanda com a inserção: ", demanda)
+        #print("Volume máximo: ", volume_maximo)
         #print("Demanda: ", demanda)
         if demanda > volume_maximo:
-            print("Limite de demanda ultrapassado.")
+            #print("Limite de demanda ultrapassado.")
             return False
 
         ###### TESTE DE TEMPO ######
         posicao_j = rota_corrente.index(arco[0])
         rota_corrente.insert(posicao_j + 1, u)
-        print("Rota corrente com insercao u no arco: ", rota_corrente)
+        #print("Rota corrente com insercao u no arco: ", rota_corrente)
         bju = 0
         for i in range(len(rota_corrente)-1):
             if rota_corrente[i] == 0:                
@@ -466,17 +467,17 @@ def construtivo(dic_instancia):
                     bju += matriz_tempo[rota_corrente[i]][rota_corrente[i+1]] + ot
             if bju < jti[rota_corrente[i+1]]:
                 bju = jti[rota_corrente[i+1]]
-            print("cliente: ", rota_corrente[i+1])
-            print("bju: ", bju)
-            print(f"jt[cliente]: ({jti[rota_corrente[i+1]]},{jtf[rota_corrente[i+1]]})")
+            #print("cliente: ", rota_corrente[i+1])
+            #print("bju: ", bju)
+            #print(f"jt[cliente]: ({jti[rota_corrente[i+1]]},{jtf[rota_corrente[i+1]]})")
             if bju > jtf[rota_corrente[i+1]]:
-                print("Limite de Janela de Tempo ultrapassado.")
+                #print("Limite de Janela de Tempo ultrapassado.")
                 rota_corrente.remove(u)
                 return False
 
         rota_corrente.remove(u)
 
-        print("Inserção Viável.")
+        #print("Inserção Viável.")
         return True
     
     #################################################################
@@ -486,13 +487,13 @@ def construtivo(dic_instancia):
             de janela de tempo. Essa funcao substitui o Savings.
             Ainda está em fase de construção.
         """
-        print(f"\nInicio da instancia {dic_instancia['nome_instancia']}\n")
+        #print(f"\nInicio da instancia {dic_instancia['nome_instancia']}\n")
         R = []
         #NR = rotas
         while rotas != []:
-            print("\n------Marcação de novo laço------\n")
+            #print("\n------Marcação de novo laço------\n")
             CI = []
-            print("NR: ", rotas)
+            #print("NR: ", rotas)
             for i in rotas:
                 if i not in R:
                     custo_inicializacao = -(distancia[0][i[0]])
@@ -500,7 +501,7 @@ def construtivo(dic_instancia):
             CI.sort()
             rota_corrente = [0, CI[0][1], 0]
             rotas.remove([CI[0][1]])
-            print("CI: ", CI, "\nRota Corrente :", rota_corrente)
+            #print("CI: ", CI, "\nRota Corrente :", rota_corrente)
             
             insercao_viavel = True
             while insercao_viavel:
@@ -511,7 +512,7 @@ def construtivo(dic_instancia):
                         custo_inserir = calcula_custo_inserir(i[0], (rota_corrente[j], rota_corrente[j+1]), rota_corrente)
                         H.append([custo_inserir, i, (rota_corrente[j], rota_corrente[j+1])])
                 H.sort(reverse=True)
-                print("H( ck, vi, (j,j+1) ): ", H)
+                #print("H( ck, vi, (j,j+1) ): ", H)
 
                 for h in H:
                     if testa_viabilidade(h[1][0], h[2], rota_corrente, volume, volume_maximo, jti, jtf, matriz_tempo):
@@ -520,10 +521,42 @@ def construtivo(dic_instancia):
                         rotas.remove(h[1])
                         insercao_viavel = True
                         break
-                print("\nNR: ", rotas, "\nRota Corrente :", rota_corrente)
+                #print("\nNR: ", rotas, "\nRota Corrente :", rota_corrente)
             R.append(rota_corrente)
 
-        return R
+        ###CALCULA CUSTO DA ROTA###
+        print("volumes_totais: ", volumes_totais)
+        print("volume: ", volume)
+        custo = []
+        for rota in R:
+            custo_corrente = 0
+            for i in range(len(rota)-2):
+                custo_corrente += distancia[rota[i]][rota[i+1]]
+            custo_corrente += distancia[rota[-2]][-1]
+            custo.append(custo_corrente)
+
+        soma = 0
+        for item in custo:
+            soma +=item
+        custo_total = soma
+
+        ###CALCULA VOLUME EM CADA ROTA###
+        volume_todas_rotas = []
+        for rota in R:
+            volume_da_rota = 0
+            for cliente in rota[1:-1]:
+                volume_da_rota += volume[cliente-1]
+            volume_todas_rotas.append(volume_da_rota)
+
+        ###DIC SOLUCAO###
+        dic_solucao = {
+            'Caminho'       : R,
+            'Volume'        : volume_todas_rotas,
+            'Custo'         : custo,
+            'Custo Total'   : custo_total
+            }
+
+        return dic_solucao
     
     #################################################################
                                              

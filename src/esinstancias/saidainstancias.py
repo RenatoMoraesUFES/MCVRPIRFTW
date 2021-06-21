@@ -296,4 +296,16 @@ def grafo_savings(dic_instancia, dic_solucao):
     # -> dot nomedoarquivo.dot -Tpng -o nomedografo.png
 #####################################################################
 
+def savings_resultados(dic_instancia, dic_solucao):     
+    entrada = dic_instancia["nome_instancia"]
+    os.chdir('OUTPUT')      
+    saida = 'savings_results_' + entrada + '.out'
+    fout = open(saida, 'w')
+    fout.write(f"Solucao Savings {entrada}\n")
+    for item in dic_solucao:
+        fout.write(str(item) + ': ' + str(dic_solucao[item]) + '\n')
+    fout.close()
+    os.chdir('..')
+    
+
 #####################################################################
