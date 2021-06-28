@@ -6,8 +6,8 @@ def savings(dic_instancia):
   prop=dic_instancia['caixas_do_cliente']
   #print('caixas_cliente',prop)
   volume=dic_instancia['volume_caixa']      #Busca os valores das demandas
-  print('distancia',D)
-  print('Demanda',volume)
+  #print('distancia',D)
+  #print('Demanda',volume)
   volume_limite=100
   nosf=dic_instancia['facilidades']
   economias=[]
@@ -77,6 +77,9 @@ def savings(dic_instancia):
       if verificacao_demanda==True:
         rotas_unitarias=unir_rotas(i,j,rotas_unitarias)
 
+  for rota in rotas:
+    rota.insert(0, 0)
+    rota.append(0)
   for rota in rotas_unitarias:
     demanda_rota=0
     custo_rota=0
@@ -103,130 +106,59 @@ def savings(dic_instancia):
   #print('Rotas formadas:',rotas_formadas)
   #print('custos finais',custo_final)
   #print('Volumes finais',volume_final)
+  dic_solucao = {
+    'caminho'   : rotas_formadas,
+    'volume'    : volume_final,
+    'custo'     : custo_final
+          }
+  return dic_solucao
   
-  
-  return rotas_formadas, volume_final, custo_final
 
 
-  
-  
-def unir_rotas(i, j,rotas_unitarias):
-  #print('i',i)
-  #print('j',j)
-  #print('!!!!rotas unitárias:',rotas_unitarias)
+   
+def unir_rotas(i, j, rotas_unitarias):
+  '''p1, p2 = [], []
+  for rota in rotas:
+    if rota[0] == j:
+      p1 = rota
+    elif rota[-1] == i:
+      p2 = rota
+   '''
 
-
-  for rota in rotas_unitarias: 
-    
-
-    if i in rota and j not in rota:   #verifica se uma das cidades dessa rota já pertencee a rota corrente
-      if i==rota[0] and i==rota[-1]:       #verifica se a cidade que já pertence a rota é um extremo
-        cidade_candidata=search(rotas_unitarias,j) #procura onde está a outra cidade
-        if j==rotas_unitarias[cidade_candidata[0]][0] and j==rotas_unitarias[cidade_candidata[0]][-1]:
-          rota.insert(0,j)   #adiciona somente a cidade que não faz parte da rota ainda
-          for cidade in rotas_unitarias:
-            if j in cidade and j==cidade[0] and j==cidade[-1]:
-              rotas_unitarias.remove(cidade)    #Remove a cidade inserida das rotas unitárias
-        elif j==rotas_unitarias[cidade_candidata[0]][0] and j!=rotas_unitarias[cidade_candidata[0]][-1]:
-          rotas_unitarias[cidade_candidata[0]].insert(0,i)
-          for cidade in rotas_unitarias:
-            if i in cidade and i==cidade[0] and i==cidade[-1]:
-              rotas_unitarias.remove(cidade)    #Remove a cidade inserida das rotas unitárias
-          
-        elif j==rotas_unitarias[cidade_candidata[0]][-1] and j!=rotas_unitarias[cidade_candidata[0]][0]:
-          rotas_unitarias[cidade_candidata[0]].append(i)
-          for cidade in rotas_unitarias:
-            if i in cidade and i==cidade[0] and i==cidade[-1]:
-              rotas_unitarias.remove(cidade)    #Remove a cidade inserida das rotas unitárias
+  p1=[]
+  p2=[]
+  for rota in rotas_unitarias:
+    if j in rota:
+      p1 = rota
+    elif i in rota:
+      p2 = rota
       
-      elif i==rota[0] and i!=rota[-1]:       #verifica se a cidade que já pertence a rota é um extremo
-        cidade_candidata=search(rotas_unitarias,j) #procura onde está a outra cidade
-        if j==rotas_unitarias[cidade_candidata[0]][0] and j==rotas_unitarias[cidade_candidata[0]][-1]:
-          rota.insert(0,j)   #adiciona somente a cidade que não faz parte da rota ainda
-          for cidade in rotas_unitarias:
-            if j in cidade and j==cidade[0] and j==cidade[-1]:
-              rotas_unitarias.remove(cidade)    #Remove a cidade inserida das rotas unitárias
-        elif j==rotas_unitarias[cidade_candidata[0]][0] and j!=rotas_unitarias[cidade_candidata[0]][-1]:
-          return rotas_unitarias
+  pos_p1 = rotas_unitarias.index(p1)
+  pos_p2 = rotas_unitarias.index(p2)
+ 
+  if p1[0] == j and p2[0] == i:
+    rotas_unitarias.remove(p1)
+    rotas_unitarias.remove(p2)
+    p1.reverse()
+    rotas_unitarias.append(p1+p2)
+  elif p1[-1] == j and p2[-1] == i:
+    rotas_unitarias.remove(p1)
+    rotas_unitarias.remove(p2)
+    p2.reverse()
+    rotas_unitarias.append(p1+p2)
+  elif p1[0] == j and p2[-1] == i:
+    rotas_unitarias.remove(p1)
+    rotas_unitarias.remove(p2)
+    rotas_unitarias.append(p2+p1)
+  elif p1[-1] == j and p2[0] == i:
+    rotas_unitarias.remove(p1)
+    rotas_unitarias.remove(p2)
+    rotas_unitarias.append(p1+p2)
           
-        elif j==rotas_unitarias[cidade_candidata[0]][-1] and j!=rotas_unitarias[cidade_candidata[0]][0]:
-          rotas_unitarias[cidade_candidata[0]].extend(rota) #uni as duas rotas existentes
-          rotas_unitarias.remove(rota)
-          
-        
-      elif i==rota[-1] and i!=rota[0]:      #verifica se a cidade que já pertence a rota é um extremo
-        cidade_candidata=search(rotas_unitarias,j) #procura onde está a outra cidade
-        if j==rotas_unitarias[cidade_candidata[0]][0] and j==rotas_unitarias[cidade_candidata[0]][-1]:
-          rota.append(j)       #adiciona somente a cidade que não faz parte da rota ainda
-          for cidade in rotas_unitarias:
-            if j in cidade and j==cidade[0] and j==cidade[-1]:
-              rotas_unitarias.remove(cidade)      #Remove a cidade inserida das rotas unitárias
-        elif j==rotas_unitarias[cidade_candidata[0]][0] and j!=rotas_unitarias[cidade_candidata[0]][-1]:
-          rotas_unitarias[cidade_candidata[0]].insert(0,i)
-          for cidade in rotas_unitarias:
-            if i in cidade and i==cidade[0] and i==cidade[-1]:
-              rotas_unitarias.remove(cidade)    #Remove a cidade inserida das rotas unitárias
-          
-        elif j==rotas_unitarias[cidade_candidata[0]][-1] and j!=rotas_unitarias[cidade_candidata[0]][0]:
-          rotas_unitarias[cidade_candidata[0]].append(i)
-          for cidade in rotas_unitarias:
-            if j in cidade and j==cidade[0] and j==cidade[-1]:
-              rotas_unitarias.remove(cidade)    #Remove a cidade inserida das rotas unitárias
-      else:
-        return rotas_unitarias
-    elif j in rota and i not in rota:
-      if j==rota[0] and j==rota[-1]:         #verifica se a cidade que já pertence a rota é um extremo
-        cidade_candidata=search(rotas_unitarias,i) #procura onde está a outra cidade
-        if i==rotas_unitarias[cidade_candidata[0]][0] and i==rotas_unitarias[cidade_candidata[0]][-1]:
-          rota.insert(0,i)   #adiciona somente a cidade que não faz parte da rota ainda
-          for cidade in rotas_unitarias:
-            if i in cidade and i==cidade[0] and i==cidade[-1]:
-              rotas_unitarias.remove(cidade)    #Remove a cidade inserida das rotas unitárias
-        elif i==rotas_unitarias[cidade_candidata[0]][0] and i!=rotas_unitarias[cidade_candidata[0]][-1]:
-          rotas_unitarias[cidade_candidata[0]].insert(0,j)
-          for cidade in rotas_unitarias:
-            if j in cidade and j==cidade[0] and j==cidade[-1]:
-              rotas_unitarias.remove(cidade)    #Remove a cidade inserida das rotas unitárias
-          
-        elif i==rotas_unitarias[cidade_candidata[0]][-1] and i!=rotas_unitarias[cidade_candidata[0]][0]:
-          rotas_unitarias[cidade_candidata[0]].append(j)
-          for cidade in rotas_unitarias:
-            if i in cidade and i==cidade[0] and i==cidade[-1]:
-              rotas_unitarias.remove(cidade)    #Remove a cidade inserida das rotas unitárias
-        
-      elif j==rota[0] and j!=rota[-1]:       #verifica se a cidade que já pertence a rota é um extremo
-        cidade_candidata=search(rotas_unitarias,i) #procura onde está a outra cidade
-        if i==rotas_unitarias[cidade_candidata[0]][0] and i==rotas_unitarias[cidade_candidata[0]][-1]:
-          rota.insert(0,i)   #adiciona somente a cidade que não faz parte da rota ainda
-          for cidade in rotas_unitarias:
-            if i in cidade and i==cidade[0] and i==cidade[-1]:
-              rotas_unitarias.remove(cidade)    #Remove a cidade inserida das rotas unitárias
-        elif i==rotas_unitarias[cidade_candidata[0]][0] and i!=rotas_unitarias[cidade_candidata[0]][-1]:
-          rotas_unitarias[cidade_candidata[0]].extend(rota)
-          rotas_unitarias.remove(rota)  
-        elif i==rotas_unitarias[cidade_candidata[0]][-1] and i!=rotas_unitarias[cidade_candidata[0]][0]:
-          return rotas_unitarias
-      elif  j==rota[-1] and j!=rota[0]:               #verifica se a cidade que já pertence a rota é um extremo
-        cidade_candidata=search(rotas_unitarias,j) #procura onde está a outra cidade
-        if i==rotas_unitarias[cidade_candidata[0]][0] and i==rotas_unitarias[cidade_candidata[0]][-1]:
-          rota.append(i)       #adiciona somente a cidade que não faz parte da rota ainda
-          for cidade in rotas_unitarias:
-            if i in cidade and i==cidade[0] and i==cidade[-1]:
-              rotas_unitarias.remove(cidade)      #Remove a cidade inserida das rotas unitárias
-        elif i==rotas_unitarias[cidade_candidata[0]][0] and i!=rotas_unitarias[cidade_candidata[0]][-1]:
-          rotas_unitarias[cidade_candidata[0]].insert(0,j)
-          for cidade in rotas_unitarias:
-            if i in cidade and i==cidade[0] and i==cidade[-1]:
-              rotas_unitarias.remove(cidade)    #Remove a cidade inserida das rotas unitárias
-          
-        elif j==rotas_unitarias[cidade_candidata[0]][-1] and j!=rotas_unitarias[cidade_candidata[0]][0]:
-          rotas_unitarias[cidade_candidata[0]].append(i)
-          for cidade in rotas_unitarias:
-            if j in cidade and j==cidade[0] and j==cidade[-1]:
-              rotas_unitarias.remove(cidade)    #Remove a cidade inserida das rotas unitárias
-      else:
-        return rotas_unitarias  
   return rotas_unitarias
+  
+
+
 
 
 
@@ -251,7 +183,7 @@ def restricao_de_demanda(i, j, volume_limite,volume,rotas_unitarias):
       demanda_corrente=0
       for cidade in rota:
         demanda_corrente+=volume[cidade-1]
-      cidade_candidata=search(rotas_unitarias,j) #procura onde está a outra cidade canditada para verificar se ela já está associada a uma rota
+      cidade_candidata=search(rotas_unitarias,i) #procura onde está a outra cidade canditada para verificar se ela já está associada a uma rota
       for cidade in rotas_unitarias[cidade_candidata[0]]:
         demanda_corrente+=volume[cidade-1] #demanda da segunda cidade verificada
       if demanda_corrente<=volume_limite:  #verifica se a demanda atende a restrição de capacidade
@@ -261,8 +193,11 @@ def restricao_de_demanda(i, j, volume_limite,volume,rotas_unitarias):
 
 
 def restricao_de_rotas(i, j,rotas_unitarias):
-      
+  #print('i',i)
+  #print('j',j)
+  #print('ROTA unitaria:',rotas_unitarias)    
   for rota in rotas_unitarias:  
+    #print('ROTA:',rota)
     if i in rota and j not in rota:   #verifica se uma das cidades dessa rota já pertencee a rota corrente
       if i==rota[0] or i==rota[-1]:       #verifica se a cidade que já pertence a rota é um extremo
         return True
