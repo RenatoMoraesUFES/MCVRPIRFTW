@@ -32,7 +32,7 @@ else:
 
 ###############################################################################
 # Funcao principal para controle do fluxo do programa
-
+import time
 def main():
     """ Esta função chama as principais funções de entrada, processamento e saída
 	    As variáveis globais estão definidas em src.variaveis.definicaovariaveis
@@ -70,7 +70,10 @@ def main():
             #    saidainstancias.grafo_caixas_do_cliente(dic_instancia_corrente)
             
             dic_solucao=construtivoparalelo.savings(dic_instancia_corrente)
-            print(f"Solucao Savings {instancia_corrente} = {dic_solucao}\n")
+            arquivo = open("Saidas.txt","a")
+            arquivo.write(f"Solucao {instancia_corrente} = {dic_solucao}\n")
+            arquivo.close()
+            print(f"Solucao {instancia_corrente} = {dic_solucao}\n")
             #rota_final=PFIH.vizinho_mais_proximo(dic_instancia_corrente)
             #rota_final=construtivosequencial.savings(dic_instancia_corrente)
             #visitadas, custo = PCValgoritmo.menordistancia(dic_instancia_corrente, parametros_de_execucao)
