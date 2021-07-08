@@ -21,6 +21,29 @@ dic_instancia = {
     'custo_km_rodado'         : {}, # 'cd'        # custo por km rodado (lista float)
 }
 
+
+######## Armazenar a solução como um dicionario ##########
+
+dic_solucao = {
+    'nome_instancia'    : [], #             # nome do arquivo .dat da instancia 
+    'caminho'           : [],   # conjunto de nós i e j percorridos pela rota (lista)
+    'volume'            : [],   # volume total de cada cliente pertencente a rota (float)
+    'custo'             : [],   # custo total da rota (float)
+    'Caixas por rota'   : [],   # caixas de cada cliente com seu respectivo volume que está alocada em cada rota
+    'janela_tempo'      : [],    # 
+    'custo_fixo_bike'   : [], # 'ck'        # custo fixo das bicicletas (lista int)
+    'custo_km_rodado'   : [], # 'cd'        # custo por km rodado (lista float)
+    }
+
+dic_trecho = {
+    'rota'              : [],
+    'posicao_na_rota'   : [],
+    'origem_destino'    : [],
+    'demanda'           : [],
+    'custo'             : [],
+    'janela_tempo'      : []
+    }
+
 ######## Armazenar a entrada como um dicionario (alternativo) ##########
 #dic_entrada = {
 #    'nos'       : {}, # quantidade de clientes (int) 
