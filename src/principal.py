@@ -70,10 +70,14 @@ def main():
             #    saidainstancias.grafo_caixas_do_cliente(dic_instancia_corrente)
             
             dic_solucao=construtivoparalelo.savings(dic_instancia_corrente)
-            arquivo = open("Saidas.txt","a")
-            arquivo.write(f"Solucao {instancia_corrente} = {dic_solucao}\n")
-            arquivo.close()
-            print(f"Solucao {instancia_corrente} = {dic_solucao}\n")
+            #arquivo = open("Saidas.txt","a")
+            #arquivo.write(f"Solucao {instancia_corrente} = {dic_solucao}\n")
+            #arquivo.close()
+            print(f"Solucao {instancia_corrente}")
+            for item in dic_solucao:
+                print(item, dic_solucao[item])
+            #    print("R: ", item)
+            print("\n")
             #rota_final=PFIH.vizinho_mais_proximo(dic_instancia_corrente)
             #rota_final=construtivosequencial.savings(dic_instancia_corrente)
             #visitadas, custo = PCValgoritmo.menordistancia(dic_instancia_corrente, parametros_de_execucao)
