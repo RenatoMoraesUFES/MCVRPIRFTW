@@ -165,3 +165,13 @@ def grafo_caixas_do_cliente(dic_instancia):
     os.chdir('..')
     #print("\nVerificar arquivo '.png' de saída.\n")
 
+def savings_resultados(dic_instancia, dic_solucao):     
+    entrada = dic_instancia["nome_instancia"]
+    os.chdir('OUTPUT')      
+    Saida = 'savings_results_' + entrada + '.out'
+    fout = open(Saida, 'w')
+    fout.write(f"Solucao Savings {entrada}\n")
+    for item in dic_solucao:
+        fout.write(str(item) + ': ' + str(dic_solucao[item]) + '\n')
+    fout.close()
+    os.chdir('..')
