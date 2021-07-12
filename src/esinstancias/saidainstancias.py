@@ -296,14 +296,20 @@ def grafo_savings(dic_instancia, dic_solucao):
     # -> dot nomedoarquivo.dot -Tpng -o nomedografo.png
 #####################################################################
 
-def savings_resultados(dic_instancia, dic_solucao):     
+def cria_resultados(dic_instancia, dic_solucao):
+    
     entrada = dic_instancia["nome_instancia"]
     os.chdir('OUTPUT')      
-    saida = 'savings_results_' + entrada + '.out'
-    fout = open(saida, 'w')
-    fout.write(f"Solucao Savings {entrada}\n")
-    for item in dic_solucao:
-        fout.write(str(item) + ': ' + str(dic_solucao[item]) + '\n')
+    saida = 'tabela_resultados.out'
+    if not os.path.isfile(saida):   #se o arquivo ainda nao existe
+        fout = open(saida, 'a')
+        fout.write("\nInstancia & Rotas & Volume & Custo/Rota & Custo Total\n"+"\hline")
+        fout.close()
+    fout = open(saida, 'a')
+    fout.write(f"\n{entrada} & ")
+    fout.write(str(dic_solucao['Custo Logistico'])
+               + ' & '
+               + str(dic_solucao['Custo KM']))
     fout.close()
     os.chdir('..')
     

@@ -215,12 +215,11 @@ def construtivo(dic_instancia):
         janela_tempo.remove(tempo_r)
         janela_tempo.remove(tempo_s)
 
-        
+
         volume.append(volume_r
                      +volume_s)
         volume.remove(volume_r)
         volume.remove(volume_s)
-
         
 
     ################################################################
@@ -231,6 +230,7 @@ def construtivo(dic_instancia):
         #print("Inicio JT: ", jti)
         #print("Fim JT: ", jtf)
         #print("Volume máximo: ", volume_maximo)
+        
         for i in range(len(economia)):
             cliente_i = economia[i][1][0]
             cliente_j = economia[i][1][1]
@@ -280,17 +280,32 @@ def construtivo(dic_instancia):
         soma = 0
         for item in custo:
             soma +=item
-        custo_total = soma
+        custo_logistico = 200*len(rotas)
+        custo_km = 0.4*soma
+
+        
+        volume_corrente = []
+        for item in volume:
+            volume_corrente.append([item])
+        #print("R: ", R)
+        for rota in rotas:
+            for cliente in rota[1:-1]:
+                volume_corrente[rotas.index(rota)].append(volume_corrente[rotas.index(rota)][len(volume_corrente[rotas.index(rota)])-1]
+                                                -volumes_totais[cliente-1])
+        
 
         ###PERCORRE LISTA DE TRECHOS E CRIA O DICIONARIO###
         define_dic_trecho(lista_trechos)
         
                                          
         dic_solucao = {
-            'Caminho'       : rotas,
-            'Volume'        : volume,
-            'Custo'         : custo,
-            'Custo Total'   : custo_total
+            'Caminho'               : rotas,
+            'Volume'                : volume,
+            'Volume Corrente'       : volume_corrente,
+            'Distancia Percorrida'  : custo,
+            'Custo Logistico'       : custo_logistico,
+            'Custo KM'              : custo_km,
+            'Quantidade de Veículos': len(rotas)
             }
     
 
@@ -525,8 +540,8 @@ def construtivo(dic_instancia):
             R.append(rota_corrente)
 
         ###CALCULA CUSTO DA ROTA###
-        print("volumes_totais: ", volumes_totais)
-        print("volume: ", volume)
+        #print("volumes_totais: ", volumes_totais)
+        #print("volume: ", volume)
         custo = []
         for rota in R:
             custo_corrente = 0
@@ -535,10 +550,13 @@ def construtivo(dic_instancia):
             custo_corrente += distancia[rota[-2]][-1]
             custo.append(custo_corrente)
 
+        # custo fixo da bicleta convencional
+        # mais o custo por kilometro vezes a soma
         soma = 0
         for item in custo:
             soma +=item
-        custo_total = soma
+        custo_logistico = 200*len(R)
+        custo_km = 0.4*soma
 
         ###CALCULA VOLUME EM CADA ROTA###
         volume_todas_rotas = []
@@ -548,12 +566,28 @@ def construtivo(dic_instancia):
                 volume_da_rota += volume[cliente-1]
             volume_todas_rotas.append(volume_da_rota)
 
+        ###VOLUME ATUAL EM CADA INSTANTE NA ROTA###
+        volume_corrente = []
+        for item in volume_todas_rotas:
+            volume_corrente.append([item])
+        #print("R: ", R)
+        for rota in R:
+            for cliente in rota[1:-1]:
+                volume_corrente[R.index(rota)].append(volume_corrente[R.index(rota)][len(volume_corrente[R.index(rota)])-1]
+                                                -volume[cliente-1])
+        #print("volume: ", volume)
+        #print("volume_corrente: ", volume_corrente)
+        
+        
         ###DIC SOLUCAO###
         dic_solucao = {
-            'Caminho'       : R,
-            'Volume'        : volume_todas_rotas,
-            'Custo'         : custo,
-            'Custo Total'   : custo_total
+            'Caminho'               : R,
+            'Volume'                : volume_todas_rotas,
+            'Volume Corrente'       : volume_corrente,
+            'Distancia Percorrida'  : custo,
+            'Custo Logistico'       : custo_logistico,
+            'Custo KM'              : custo_km,
+            'Quantidade de Veículos': len(R)
             }
 
         return dic_solucao

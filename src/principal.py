@@ -84,12 +84,11 @@ def main():
             #saidainstancias.grafo_savings(dic_instancia_corrente, dic_solucao)
             #print("Tempo de execução: ", fim_marca_tempo-inicio_marca_tempo)
 
-            #saidainstancias.savings_resultados(dic_instancia, dic_solucao)
+            saidainstancias.cria_resultados(dic_instancia, dic_solucao)
             #print(f"Solucao Savings {instancia_corrente}\n")
             print(f"Solucao PFIH {instancia_corrente}")
             for item in dic_solucao:
                 print(item, dic_solucao[item])
-            #    print("R: ", item)
             print("\n")
             
             ##### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
