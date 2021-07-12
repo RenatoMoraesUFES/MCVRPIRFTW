@@ -587,7 +587,7 @@ def construtivo(dic_instancia):
             'Distancia Percorrida'  : custo,
             'Custo Logistico'       : custo_logistico,
             'Custo KM'              : custo_km,
-            'Quantidade de Veículos': len(R)
+            'Quantidade de Veiculos': len(R)
             }
 
         return dic_solucao

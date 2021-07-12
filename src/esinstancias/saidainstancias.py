@@ -303,13 +303,16 @@ def cria_resultados(dic_instancia, dic_solucao):
     saida = 'tabela_resultados.out'
     if not os.path.isfile(saida):   #se o arquivo ainda nao existe
         fout = open(saida, 'a')
-        fout.write("\nInstancia & Rotas & Volume & Custo/Rota & Custo Total\n"+"\hline")
+        fout.write("\nInstancia & Custo Logistico & Custo KM & Quantidade de Veiculos Utilizados \\\ \n"+"\hline")
         fout.close()
     fout = open(saida, 'a')
     fout.write(f"\n{entrada} & ")
     fout.write(str(dic_solucao['Custo Logistico'])
                + ' & '
-               + str(dic_solucao['Custo KM']))
+               + str(dic_solucao['Custo KM'])
+               + ' & '
+               + str(dic_solucao['Quantidade de Veiculos'])
+               + ' \\\ ')
     fout.close()
     os.chdir('..')
     
