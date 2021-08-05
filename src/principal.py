@@ -69,14 +69,15 @@ def main():
             #if parametros_de_execucao['grafo_caixas_do_cliente'] == 1:
             #    saidainstancias.grafo_caixas_do_cliente(dic_instancia_corrente)
             
+            #inicio=time.time()
             dic_solucao=construtivoparalelo.savings(dic_instancia_corrente)
-            #arquivo = open("Saidas.txt","a")
-            #arquivo.write(f"Solucao {instancia_corrente} = {dic_solucao}\n")
-            #arquivo.close()
-            print(f"Solucao {instancia_corrente}")
+            #fim=time.time()
+            #print("Tempo de execução: ", fim-inicio)
+            saidainstancias.cria_resultados(dic_instancia, dic_solucao)
+            #print(f"Solucao Savings {instancia_corrente}\n")
+            print(f"Solucao Savings {instancia_corrente}")
             for item in dic_solucao:
                 print(item, dic_solucao[item])
-            #    print("R: ", item)
             print("\n")
             #rota_final=PFIH.vizinho_mais_proximo(dic_instancia_corrente)
             #rota_final=construtivosequencial.savings(dic_instancia_corrente)
