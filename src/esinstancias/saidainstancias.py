@@ -165,13 +165,63 @@ def grafo_caixas_do_cliente(dic_instancia):
     os.chdir('..')
     #print("\nVerificar arquivo '.png' de saída.\n")
 
-def savings_resultados(dic_instancia, dic_solucao):     
+
+#####################################################################
+
+def cria_resultados(dic_instancia, dic_solucao):
+    
     entrada = dic_instancia["nome_instancia"]
     os.chdir('OUTPUT')      
-    Saida = 'savings_results_' + entrada + '.out'
-    fout = open(Saida, 'w')
-    fout.write(f"Solucao Savings {entrada}\n")
-    for item in dic_solucao:
-        fout.write(str(item) + ': ' + str(dic_solucao[item]) + '\n')
+    saida = 'tabela_resultados.out'
+    if not os.path.isfile(saida):   #se o arquivo ainda nao existe
+        fout = open(saida, 'a')
+        fout.write("\nRESULTADOS \\\ \n"+"\hline    ")
+        fout.close()
+    fout = open(saida, 'a')
+    fout.write("\n************************************************************************************** \\\ \n""\n")
+    fout.write(f"Instância Analisada\n{entrada} \n")
+    fout.write("\nRotas Formadas   &   Volumes \\\ \n"+"\hline    ")
+    fout.write(str(dic_solucao['Caminho'])
+    + ' \\\ '"\n")
+    fout.write(str(dic_solucao['Volume'])
+    + ' \\\ '"\n")
+    fout.close()
+    fout = open(saida, 'a')
+    fout.write("\nInstancia & Custo de Utilização & Custo KM & Quantidade de Veiculos Utilizados \\\ \n"+"\hline")
+    fout.write(f"\n{entrada} & ")
+    fout.write(str(dic_solucao['Custo Utilização'])
+               + ' & '
+               + str(dic_solucao['Custo KM'])
+               + ' & '
+               + ' & '
+               + str(dic_solucao['Quantidade de Veiculos'])
+               + ' & '
+               + ' & '
+               + str(dic_solucao['Capacidade média utilizada'])
+               + ' \\\ '"\n")
+    fout.close()
+    fout = open(saida, 'a')
+    fout.write("\nInstância &   Volume (?)   &   Distância (km) \\\ \n"+"\hline    ")
+    fout.write(f"\n{entrada} & ")
+    fout.write(str(dic_solucao['Volume médio por rota'])
+               + ' & '
+               + str(dic_solucao['Distancia média percorrida'])
+               + ' \\\ '"\n")
+    fout.close()
+    fout = open(saida, 'a')     #Função de exportação de informações sobre a relação da variação de volume limite com a capacidade do veículo
+    fout.write("\nInstância &   Volume máximo(?)   &   Capacidade utilizada (%) \\\ \n"+"\hline    ")
+    fout.write(f"\n{entrada} & ")
+    fout.write(str(dic_solucao['Volume limite'])
+               + ' & '
+               + str(dic_solucao['Capacidade média utilizada'])
+               + ' \\\ '"\n")
+    fout.close()
+    fout = open(saida, 'a')
+    fout.write(f"\n{entrada} & ")
+    fout.write(str(dic_solucao['Caixas por rota'])
+    + ' \\\ ')
+    fout.write("\n************************************************************************************** \\\ \n""\n")
     fout.close()
     os.chdir('..')
+    
+#####################################################################
