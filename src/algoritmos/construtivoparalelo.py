@@ -1,5 +1,5 @@
 def savings(dic_instancia):
-      #Função que busca minimizar o custo total de transporte obedecendo as restrições de capacidade e de número de visitas a um cliente
+  #Função que busca minimizar o custo total de transporte obedecendo as restrições de capacidade e de número de visitas a um cliente
   D= dic_instancia['distancia'][:] #Busca a matriz distancia 
   #capacidade= dic_instancia['num_max_compartimentos']    #Busca o valor da capacidade do veiculo
   prop=dic_instancia['caixas_do_cliente']
@@ -9,6 +9,7 @@ def savings(dic_instancia):
   cd=dic_instancia['custo_km_rodado']
   ck=dic_instancia['custo_fixo_bike']
   economias=[]
+  import numpy as np
   
   for i in range(0,len(D)-1):    #Esse bloco calcula o valor economizado com a junção de duas entregas
     linha=[]
@@ -55,42 +56,74 @@ def savings(dic_instancia):
     i=cidade[1][0]   #seleciona a cidade de partida da rota mais economica
     j=cidade[1][1]   #seleciona a cidade de chegada da rota mais economica
     
-    
     rota_final=rotas_unitarias
     i=cidade[1][0]   #seleciona a cidade de partida da rota mais economica
     j=cidade[1][1]   #seleciona a cidade de chegada da rota mais economica
 
     verificacao_rota=restricao_de_rotas(i,j,rotas_unitarias)
     if verificacao_rota==True:
-      #verificacao_janela=janela_tempo(wti,wtf,oti,rotas_unitarias,i,j,t)
-      #if verificacao_janela==True:
       verificacao_demanda=restricao_de_demanda(i,j,volume_limite,volume_por_rota_unitaria,rotas_unitarias)
       if verificacao_demanda==True:
         rotas_unitarias=unir_rotas(i,j,rotas_unitarias)
 
-  #CALCULA O VOLUME QUE CADA ROTA CARREGA, COMO TAMBÉM O CUSTO DE CADA UMA
-  custo_final=[]
+  rotas_formadas, volume_final, caixas_por_rota, custo_km,custo_total,custo_utilizacao,dmp,vmpr,cau=saidas(rotas_unitarias,cd,ck,D,volume_por_rota_unitaria,prop,volume,volume_limite)
+  
+  #cpr_T=[]
+  #cpr_T= np.array(caixas_por_rota).T  #Resultado da entrega de caixas por rota transposta
+  dic_solucao = {
+    'Caminho'               : rotas_formadas,
+    'Volume'                : volume_final,
+    'Caixas por rota'   : caixas_por_rota,
+    #'Entrega de caixas por rota'  : cpr_T,
+    'Distancia Percorrida'  : custo_total,
+    'Custo Utilização'       : custo_utilizacao,
+    'Custo KM'              : custo_km,
+    'Quantidade de Veiculos': len(rotas_formadas),
+    'Distancia média percorrida'  : dmp,
+    'Volume médio por rota' : vmpr,
+    'Capacidades utilizadas'  : cau,
+    'Capacidade média utilizada' : sum(cau)/len(rotas_formadas),
+    'Volume limite'  : volume_limite
+
+    }
+
+  return dic_solucao
+  
+
+'''def entrega(rotas_formadas,volume_final,caixas_por_rota): #Função que retira os clientes e suas caixas das rotas após a entrega
+  import copy
+  entrega_caixas_por_rota=copy.deepcopy(caixas_por_rota)
+  for rota in rotas_formadas:
+    for cliente in range(1,len(rota)-1):
+      for j in range(0,len(entrega_caixas_por_rota)):
+        if entrega_caixas_por_rota[j] != "-":
+          for k in range(0,len(entrega_caixas_por_rota[j])):
+            if rota[cliente] == entrega_caixas_por_rota[j][k][0]:
+              entrega_caixas_por_rota[j][k]="-"
+
+  return entrega_caixas_por_rota'''
+
+def saidas(rotas_unitarias,cd,ck,D,volume_por_rota_unitaria,prop,volume,volume_limite):
+
+
+  #CALCULA O VOLUME QUE CADA ROTA CARREGA
   volume_final=[]
-  cdr_final=[]
+  capacidades_utilizadas=[]
   for rota in rotas_unitarias:
     demanda_rota=0
-    custo_rota=0
-    cdr=0
+    capacidade_utilizada_rota=0
     for cidade in rota:
       demanda_rota+=volume_por_rota_unitaria[cidade-1]
-      custo_rota+=D[cidade][cidade+1]
-      cdr=custo_rota*cd[1]            #calcula o custo do km para bicicleta convencional
     volume_final.append(demanda_rota)
-    custo_final.append(custo_rota)
-    cdr_final.append(cdr)
-
-  rotas_formadas=rotas_unitarias
+    capacidade_utilizada_rota=(demanda_rota*100)/volume_limite
+    capacidades_utilizadas.append(capacidade_utilizada_rota)
+  volume_medio_por_rota=sum(volume_final)/len(rotas_unitarias)
   
   #Busca as caixas de cada cliente e seus respectivos volumes quue estarão em cada rota
   caixas_por_rota=[]
   r=[]
   caixa=()
-  for rota in rotas_formadas:
+  for rota in rotas_unitarias:
     for cidade in rota:
       for j in range(0, len(prop[cidade])):
         if prop[cidade-1][j]==1:
@@ -102,36 +135,27 @@ def savings(dic_instancia):
 
   #print('caixas por rota',caixas_por_rota)
 
-  #Insere o armazem no inicio e final das rotas formadas, para padronização, e calcula o custo de cada uma delas
-  custo_final = []            
-  for rota in rotas_formadas:
+  #Insere o armazem no inicio e final das rotas formadas, para padronização, e calcula o custo de cada uma delas(custo de utilização, por km e distancia)
+  custo_rota = [] 
+  custo_km_rota=[]           
+  for rota in rotas_unitarias:
     custo_corrente = 0
-    rota.insert(0,0)
-    rota.append(0)
+    rota.insert(0,0)    #insere o armazem no inicio de cada rota
+    rota.append(0)      #insere o armazem no fim de cada rota
+    cdr=0
     for i in range(len(rota)-2):
       custo_corrente += D[rota[i]][rota[i+1]]
     custo_corrente += D[rota[-2]][-1]
-    custo_final.append(custo_corrente)
-  custo_total=sum(custo_final)    #Calcula o custo final de todas as rotas
-  custo_utilizacao=len(rotas_formadas)*ck[1] #custo de utilização
+    cdr=custo_corrente*cd[2]            #calcula o custo do km para bicicleta convencional
+    custo_km_rota.append(cdr)
+    custo_rota.append(custo_corrente)
+  custo_km=sum(custo_km_rota)
+  custo_total=sum(custo_rota)    #Calcula o custo final de todas as rotas
+  custo_utilizacao=len(rotas_unitarias)*ck[2] #custo de utilização da instancia
   #print('custo utilização',custo_utilizacao)
-  #Calcula o custo por km rodado para cada rota
+  distancia_media_percorrida=custo_total/len(rotas_unitarias)
 
-
-
-  dic_solucao = {
-    'Caminho'           : rotas_formadas,
-    'Volume'            : volume_final,
-    'Custo'             : custo_final,
-    'Caixas por rota'   : caixas_por_rota,
-    'Custo Total'       : custo_total,
-    'Custo_km_rodado_rotas'   : cdr_final,        # custo por km rodado por rota (lista float)
-    'Custo_utilização'   : custo_utilizacao
-    }
-    
-
-  return dic_solucao
-  
+  return rotas_unitarias, volume_final, caixas_por_rota, custo_km,custo_total,custo_utilizacao,distancia_media_percorrida,volume_medio_por_rota,capacidades_utilizadas
 
 
 #FUNÇÃO PARA UNIR AS ROTAS VIÁVEIS
