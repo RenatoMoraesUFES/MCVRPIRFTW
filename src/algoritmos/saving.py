@@ -292,20 +292,36 @@ def construtivo(dic_instancia):
             for cliente in rota[1:-1]:
                 volume_corrente[rotas.index(rota)].append(volume_corrente[rotas.index(rota)][len(volume_corrente[rotas.index(rota)])-1]
                                                 -volumes_totais[cliente-1])
+
+        volume_todas_rotas = []
+        for rota in rotas:
+            volume_da_rota = 0
+            for cliente in rota[1:-1]:
+                volume_da_rota += volumes_totais[cliente-1]
+            volume_todas_rotas.append(volume_da_rota)
+
+        utilizacao = []
+        for i in range(len(volume_todas_rotas)):
+            utilizacao.append((volume_todas_rotas[i]/volume_maximo)*100)
+        util_media = 0
+        for x in utilizacao:
+            util_media += x
+        util_media = util_media/len(utilizacao)
         
 
         ###PERCORRE LISTA DE TRECHOS E CRIA O DICIONARIO###
-        define_dic_trecho(lista_trechos)
-        
-                                         
+                                                 
         dic_solucao = {
+            'Instancia'             : dic_instancia["nome_instancia"],
             'Caminho'               : rotas,
             'Volume'                : volume,
             'Volume Corrente'       : volume_corrente,
+            'Volume Maximo'         : volume_maximo,
             'Distancia Percorrida'  : custo,
             'Custo Logistico'       : custo_logistico,
             'Custo KM'              : custo_km,
-            'Quantidade de Veículos': len(rotas)
+            'Quantidade de Veiculos': len(rotas),
+            'Utilizacao Media'      : util_media
             }
     
 
@@ -577,17 +593,28 @@ def construtivo(dic_instancia):
                                                 -volume[cliente-1])
         #print("volume: ", volume)
         #print("volume_corrente: ", volume_corrente)
+
+        utilizacao = []
+        for i in range(len(volume_todas_rotas)):
+            utilizacao.append((volume_todas_rotas[i]/volume_maximo)*100)
+        util_media = 0
+        for x in utilizacao:
+            util_media += x
+        util_media = util_media/len(utilizacao)
         
         
         ###DIC SOLUCAO###
         dic_solucao = {
+            'Instancia'             : dic_instancia["nome_instancia"],
             'Caminho'               : R,
             'Volume'                : volume_todas_rotas,
             'Volume Corrente'       : volume_corrente,
+            'Volume Maximo'         : volume_maximo,
             'Distancia Percorrida'  : custo,
             'Custo Logistico'       : custo_logistico,
             'Custo KM'              : custo_km,
-            'Quantidade de Veiculos': len(R)
+            'Quantidade de Veiculos': len(R),
+            'Utilizacao Media'      : util_media
             }
 
         return dic_solucao

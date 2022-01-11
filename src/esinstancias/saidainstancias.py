@@ -1,6 +1,6 @@
 import os
-import networkx as nx
-import matplotlib.pyplot as plt
+#import networkx as nx
+#import matplotlib.pyplot as plt
 
 ###############################################################################
 
@@ -296,23 +296,55 @@ def grafo_savings(dic_instancia, dic_solucao):
     # -> dot nomedoarquivo.dot -Tpng -o nomedografo.png
 #####################################################################
 
-def cria_resultados(dic_instancia, dic_solucao):
-    
-    entrada = dic_instancia["nome_instancia"]
-    os.chdir('OUTPUT')      
+def cria_tabelas(dic_instancia, lista_dic_solucao):
+
+    os.chdir('OUTPUT')
     saida = 'tabela_resultados.out'
-    if not os.path.isfile(saida):   #se o arquivo ainda nao existe
-        fout = open(saida, 'a')
-        fout.write("\nInstancia & Custo Logistico & Custo KM & Quantidade de Veiculos Utilizados \\\ \n"+"\hline")
-        fout.close()
     fout = open(saida, 'a')
-    fout.write(f"\n{entrada} & ")
-    fout.write(str(dic_solucao['Custo Logistico'])
-               + ' & '
-               + str(dic_solucao['Custo KM'])
-               + ' & '
-               + str(dic_solucao['Quantidade de Veiculos'])
-               + ' \\\ ')
+    
+    ### FOR para tabelas de custo logistico por instancia ###
+    fout.write("\n")
+    for dic_solucao_corrente in lista_dic_solucao:
+        entrada = dic_solucao_corrente["Instancia"][:2]      
+        fout.write(f"\n{entrada} & ")
+        fout.write(f"{dic_solucao_corrente['Custo Logistico']}"
+                   + ' & '
+                   + f"{dic_solucao_corrente['Custo KM']:.3f}"
+                   + ' & '
+                   + f"{dic_solucao_corrente['Quantidade de Veiculos']}"
+                   + ' \\\ ')
+
+    ### FOR para tabela de distancia e volume por rota ###
+    fout.write("\n\n")
+    fout.write(" Inst & ")
+    for x in range(7):
+        fout.write(" & " + "0"+str(x+1))
+    fout.write(" \\\ \n\hline")
+    for dic_solucao_corrente in lista_dic_solucao:
+        entrada = dic_solucao_corrente["Instancia"][:2]
+        fout.write(f"\n{entrada} & ")
+        fout.write("Dist")
+        for dist in dic_solucao_corrente['Distancia Percorrida']:
+            fout.write(f" & {dist:.2f}")
+        fout.write(" \\\ ")
+        fout.write(f"\n & ")
+        fout.write("Vol")
+        for vol in dic_solucao_corrente['Volume']:
+            fout.write(f" & {vol:.2f}")
+        fout.write(" \\\ \n\hline")
+
+    ### FOR para tabela de utilizacao por volume ###
+    utiliz_media_total = 0
+    numero_medio_bicicletas = 0
+    for dic_solucao_corrente in lista_dic_solucao:
+        utiliz_media_total += dic_solucao_corrente['Utilizacao Media']
+        numero_medio_bicicletas += dic_solucao_corrente['Quantidade de Veiculos'] 
+        vol_max = dic_solucao_corrente['Volume Maximo']
+    utiliz_media_total = utiliz_media_total/len(lista_dic_solucao)
+    numero_medio_bicicletas = numero_medio_bicicletas/len(lista_dic_solucao)
+    fout.write(f"\n\n{vol_max} & {utiliz_media_total:.1f} & {numero_medio_bicicletas:.2f} \\\ ")
+         
+
     fout.close()
     os.chdir('..')
     

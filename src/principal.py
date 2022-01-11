@@ -48,6 +48,7 @@ def main():
     
     
     ### processa todas as instâncias da lista. Uma de cada vez, carregada em instancia_corrente
+    lista_dic_solucao = []
     for instancia_corrente in lista_de_instancias: 
         #print(dic_instancia, end='\n\n\n')
         try:
@@ -79,16 +80,16 @@ def main():
             #print(f"Solucao BL2 {instancia_corrente} = {sol_bl2_pcv} com custo = %.3f\n" %cust_bl2_pcv)
 
             #inicio_marca_tempo = time.time()
-            dic_solucao = saving.construtivo(dic_instancia_corrente)
+            dic_solucao_corrente = saving.construtivo(dic_instancia_corrente)
             #fim_marca_tempo = time.time()
-            #saidainstancias.grafo_savings(dic_instancia_corrente, dic_solucao)
+            #saidainstancias.grafo_savings(dic_instancia_corrente, dic_solucao_corrente)
             #print("Tempo de execução: ", fim_marca_tempo-inicio_marca_tempo)
 
-            saidainstancias.cria_resultados(dic_instancia, dic_solucao)
+            #saidainstancias.cria_tabelas(dic_instancia, dic_solucao_corrente)
             #print(f"Solucao Savings {instancia_corrente}\n")
-            print(f"Solucao PFIH {instancia_corrente}")
-            for item in dic_solucao:
-                print(item, dic_solucao[item])
+            print(f"Solucao PFIH")
+            for item in dic_solucao_corrente:
+                print(item, dic_solucao_corrente[item])
             print("\n")
             
             ##### dic_solucao_corrente = algoritmos.construtivo(dic_instancia_corrente, configuracoes)
@@ -102,6 +103,9 @@ def main():
             print(f"\nErro em {instancia_corrente}.")
             print(e, "\n")
             continue
+        lista_dic_solucao.append(dic_solucao_corrente)
+        
+    saidainstancias.cria_tabelas(dic_instancia, lista_dic_solucao)
     print("\nFim.\n")
 ###############################################################################
 
